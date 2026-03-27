@@ -1,71 +1,52 @@
 
 
-# Konfigüratör Geliştirmeleri + Tasarım Dili Güncelleme
+# Ana Sayfa Premium Tasarım + Hero Slider Güncellemesi
 
-## Referans Tasarım Analizi
-[Project Proposal Hub](/projects/eddc885d-36f4-4c8f-bb53-3740c60ddb21) projesindeki tasarım dili:
-- **Renkler**: `navy-deep` (222 58% 8%), `navy` (220 55% 11%), `amber` (345 100% 60%) accent olarak, `steel` (215 18% 52%), `warm-gray`, `surface`
-- **Gölgeler**: `shadow-premium`, `shadow-premium-lg`, `shadow-premium-xl` — yumuşak, katmanlı
-- **Kartlar**: `border-t-2 border-t-amber/30`, gradient navy ikonlar, `border-border-strong`
-- **Tipografi**: `tracking-[0.25em] uppercase` etiketler, `font-light` başlıklar, daha ince/rafine
-- **Genel**: Daha koyu lacivert tonları, kırmızı yerine amber-kırmızı accent, radial gradient arka planlar
+## 1. Ana Sayfa Hero - Referans Stilinde Yeniden Tasarım
 
-## Plan
+Mevcut hero section'ı referans görseldeki gibi koyu navy (`bg-navy-deep`) arka planlı, 2 sütunlu layout'a dönüştüreceğiz:
 
-### 1. Tasarım Sistemi Güncelleme
+**Sol taraf:**
+- `INDUSTRIAL SOLUTIONS` / `ENDÜSTRİYEL ÇÖZÜMLER` — `tracking-[0.25em] uppercase text-amber` etiket
+- `Request a Proposal for` — `font-light text-4xl`
+- `Your Production Project` — `font-bold italic text-5xl` (amber alt çizgi)
+- Açıklama metni — `text-steel`
+- 2 buton: `SEND PROJECT DETAILS` (amber bg) + `Explore Solutions` (ghost)
 
-**`src/index.css`**: Referans projedeki CSS değişkenlerini ekle:
-- `--navy-deep`, `--warm-gray`, `--steel`, `--surface`, `--border-strong` ekle
-- `--amber` / `--amber-dark` / `--amber-foreground` ekle (mevcut `--red` ile paralel)
-- Utility class'ları ekle: `bg-navy-deep`, `text-steel`, `bg-warm-gray`, `bg-surface`, `border-border-strong`
+**Sag taraf:**
+- "WE SUPPORT" kart listesi — koyu kart arka plan, her item'da amber tonlu ikon + baslik + aciklama
+- Items: Ready Lines, Single Machines, Custom Projects, Technical Coordination
 
-**`tailwind.config.ts`**: Yeni renkleri Tailwind'e ekle:
-- `navy.deep`, `amber`, `warm-gray`, `surface`, `steel`, `border-strong`
-- `boxShadow`: `premium`, `premium-lg`, `premium-xl`
+**Alt bar:**
+- 4 ikon + metin: Turnkey Coordination, Flexible Sourcing, Multi-Sector Expertise, Structured Proposals
+- Amber ikonlar, `tracking-[0.15em] uppercase text-xs` etiketler
 
-### 2. MACLINE — Brix/Kapasite Hesaplayıcı + Karşılaştırma Tablosu
+## 2. Quick Access Cards - Premium Stil
 
-**`MaclineConfigurator.tsx`**:
-- **Brix hesaplayıcı bölümü**: 3 slider (Hammadde Brix 4-8, Hedef Brix 28-36, Günlük çalışma saati 8-24). Formül ile günlük salça çıktısı hesaplanır, uygun paket önerilir
-- **Tam karşılaştırma tablosu**: Tüm paketler yan yana, tüm özellikler satır satır (fiyat, kapasite, ürünler, elektrik, buhar, su). Seçili paket vurgulu
-- Kartlara büyük Lucide ikonları eklenir (Factory, Boxes, Crown vb.)
-- Tasarım dili: `border-t-2 border-t-amber/30`, `shadow-premium`, gradient navy ikon kutuları
+Mevcut kartlara premium tasarim uygula:
+- `border-t-2 border-t-amber/30`, `shadow-premium`
+- Gradient navy ikon kutulari (`bg-gradient-to-br from-navy-deep to-navy`)
+- `hover:shadow-premium-lg hover:scale-[1.02]` animasyonlar
 
-### 3. Sos & Süt Konfigüratörleri — Görsel İyileştirme
+## 3. Process Steps - Premium Stil
 
-**`SauceConfigurator.tsx`**:
-- Hat kartlarına büyük ikonlar (Beaker, FlaskConical, Warehouse)
-- `shadow-premium` gölge, `border-t-2 border-t-amber/30` üst kenarlık
-- Gradient navy ikon kutuları
+- Arka plan: `bg-navy-deep` yerine koyu navy gradient
+- Step ikonlari: amber hover efekti, gradient ikon kutulari
+- Baslık: `font-light`, üstte `tracking-[0.25em] uppercase` etiket
 
-**`DairyConfigurator.tsx`**:
-- Makine kartlarına ikonlar (Thermometer, Gauge, Filter, Wind, Flame, CookingPot, Milk, PackageCheck)
-- Aynı kart stili: premium gölge, amber accent, gradient ikon kutuları
+## 4. CTA Banner - Premium Stil
 
-### 4. Ana Konfigüratör Sayfası — Animasyon + Tab İkonları
+- `bg-gradient-to-r from-amber to-amber-dark` arka plan
+- Veya navy arka plan + amber buton kombinasyonu
 
-**`Configurator.tsx`**:
-- Tab ikonları büyütülür (h-5 w-5), her biri amber renkli ikon kutusunda
-- TabsContent'e `animate-fade-in` class eklenir
-- Hero bölümüne referanstaki gibi `tracking-[0.25em] uppercase` etiket + `font-light` başlık stili
-- Arka plana hafif radial gradient pattern
+## 5. Konfigüratör Mobil Kontrol + Test
 
-### 5. Teklif Formu Tasarım Güncellemesi
-
-**`ConfiguratorQuoteForm.tsx`**:
-- Form kartına `shadow-premium-lg`, `border-t-2 border-t-amber/30`
-- Submit buton: `bg-amber hover:bg-amber-dark` stili
-- Input'lara `border-border-strong` kenarlık
+Konfigüratör sayfasındaki tablo ve slider'ların mobil uyumluluğu kontrol edilecek, gerekirse `overflow-x-auto` ve responsive düzeltmeler yapılacak.
 
 ## Dosya Listesi
 
-| Dosya | Değişiklik |
+| Dosya | Degisiklik |
 |---|---|
-| `src/index.css` | Yeni CSS değişkenleri + utility class'lar |
-| `tailwind.config.ts` | Yeni renkler + premium shadow'lar |
-| `src/components/configurator/MaclineConfigurator.tsx` | Brix hesaplayıcı, karşılaştırma tablosu, ikonlar, yeni tasarım |
-| `src/components/configurator/SauceConfigurator.tsx` | İkonlar, premium kart stili |
-| `src/components/configurator/DairyConfigurator.tsx` | İkonlar, premium kart stili |
-| `src/pages/Configurator.tsx` | Tab animasyonları, büyük ikonlar, hero stili |
-| `src/components/configurator/ConfiguratorQuoteForm.tsx` | Premium form tasarımı |
+| `src/pages/Index.tsx` | Hero section yeniden tasarım (referans stilinde 2 sütun), kartlar premium stil, process steps premium, CTA güncelleme |
+| `src/contexts/LanguageContext.tsx` | Yeni hero çeviri anahtarları (TR/EN) |
 
