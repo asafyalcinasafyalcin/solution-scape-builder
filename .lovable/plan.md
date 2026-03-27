@@ -1,58 +1,43 @@
 
 
-# Dolum & Paketleme - İnteraktif Hat Oluşturucu
+# Dolum Hattı Oluşturucu - Geliştirmeler
 
-## Konsept
-Kullanıcılar adım adım kendi dolum hattını oluşturabilecek bir "Line Builder" arayüzü. Sayfanın üst kısmında mevcut makine kataloğu kalacak, altına interaktif hat oluşturucu eklenecek.
+## 3 Ana Değişiklik
 
-## Hat Oluşturucu Akışı (4 Adım)
+### 1. Yeni Adım: Ambalaj Kapasitesi (Adım 4)
+Ambalaj tipi seçildikten sonra, ambalaj kapasitesi/hacmi sorulacak:
+- 0.25 L / 250 ml
+- 0.5 L / 500 ml
+- 1 L
+- 2 L
+- 5 L
+- 10 L / Bidon
+- 25 L+
 
-**Adım 1 - Ürün Tipi Seç**
-- Sıvı (su, süt, meyve suyu)
-- Yarı akışkan (yoğurt, bal, reçel)
-- Viskoz (salça, ketçap, mayonez)
-- Toz / Granül
+Toplam akış: Ürün Tipi → Kapasite → Ambalaj Tipi → **Ambalaj Hacmi** → Ekipman Seçimi (5 adım)
 
-**Adım 2 - Kapasite Seç**
-- Küçük (500-2.000 adet/saat)
-- Orta (2.000-5.000 adet/saat)
-- Büyük (5.000-10.000 adet/saat)
-- Endüstriyel (10.000+ adet/saat)
+### 2. Teklif Akışı: Özet + İletişim Formu + E-posta
+Şu an "Teklif Al" butonu iletişim sayfasına yönlendiriyor. Bunun yerine:
+- Tüm adımlar tamamlanınca **özet kartı** gösterilecek
+- "Bu Hat İçin Teklif İste" butonuna basınca **iletişim formu açılacak** (inline, aynı sayfada)
+  - Ad Soyad, Firma, E-posta, Telefon, Ek Not alanları
+- Form doldurulup gönderildiğinde hat konfigürasyonu + iletişim bilgileri birleştirilerek **teknik ofise mailto ile e-posta** oluşturulacak
+- Gönderim sonrası başarı mesajı
 
-**Adım 3 - Ambalaj Tipi Seç**
-- Cam Şişe
-- Pet Şişe
-- Teneke Kutu
-- Pouch / Doypack
-- Kavanoz
-- Bidon / IBC
+### 3. Butonlar: Daha Büyük, Görsel, Modern
+`LineBuilderStep` bileşenindeki seçim kartları yeniden tasarlanacak:
+- Daha büyük boyut (min-height: 120px)
+- Her seçenek için ilgili ikon (Lucide)
+- Hover animasyonu (scale, shadow, border glow)
+- Seçili durumda belirgin accent arka plan + büyük onay ikonu
+- Grid: mobilde 2 sütun, masaüstünde 3-4 sütun
 
-**Adım 4 - Hat Ekipmanları Seç**
-Seçimlere göre önerilen makineler otomatik işaretlenir, kullanıcı ekleyip çıkarabilir:
-- Dolum makinesi (tip otomatik önerilir)
-- Kapak kapama (ambalaja göre önerilir)
-- Etiketleme
-- Shrink ambalaj
-- Konveyör sistemi
-- UV / Sterilizasyon
-- Birikim masası
+## Teknik Değişiklikler
 
-## Özet & Teklif
-Seçimler tamamlandığında görsel bir hat özeti gösterilir (seçilen makineler sıralı akış şeklinde). "Bu Hat İçin Teklif Al" butonu ile seçimler iletişim formuna parametre olarak aktarılır (mailto veya Contact sayfasına yönlendirme).
-
-## Teknik Detaylar
-
-### Dosya Değişiklikleri
-1. **`src/pages/FillingMachines.tsx`** - Mevcut sayfa korunur, altına `<LineBuilder />` bileşeni eklenir
-2. **`src/components/filling/LineBuilder.tsx`** (yeni) - Ana hat oluşturucu bileşeni. State ile adım yönetimi, seçim mantığı, öneri algoritması
-3. **`src/components/filling/LineBuilderStep.tsx`** (yeni) - Tekrar kullanılabilir adım kartı bileşeni
-4. **`src/components/filling/LineSummary.tsx`** (yeni) - Seçim özeti ve görsel akış diyagramı
-5. **`src/contexts/LanguageContext.tsx`** - Hat oluşturucu için TR/EN çeviri anahtarları eklenir
-
-### UI Tasarımı
-- Stepper/progress bar ile adım takibi
-- Kart bazlı seçim (tıkla-seç, çoklu seçim desteği)
-- Seçili öğeler accent rengiyle vurgulanır
-- Özet bölümünde yatay akış diyagramı (makine ikonları → oklar)
-- Mobil uyumlu: dikey akış
+| Dosya | Değişiklik |
+|-------|-----------|
+| `LineBuilder.tsx` | Yeni `packagingCapacity` state, 5 adımlı akış, inline iletişim formu state'i, mailto gönderim |
+| `LineBuilderStep.tsx` | Büyük kartlar, ikon desteği, hover/scale animasyonları |
+| `LineSummary.tsx` | Ambalaj hacmi alanı ekleme, "Teklif İste" → inline form açma, form submit → mailto |
+| `LanguageContext.tsx` | Ambalaj hacmi çevirileri (TR/EN), form alan çevirileri |
 
