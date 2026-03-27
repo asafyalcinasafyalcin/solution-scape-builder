@@ -1,31 +1,33 @@
 
 
-# Ana Sayfa Hero Banner/Slider Ekleme
-
-## Mevcut Durum
-Ana sayfa şu an referans görseldeki gibi statik bir hero section'a sahip. Kullanıcı daha önce "en üst kısma bir ana sayfa slider'ı gibi bir şey ekle" demişti ama bu henüz eklenmemiş.
+# Konfigüratör Sayfasına Hero Banner/Slider Ekleme
 
 ## Plan
 
-### Hero Slider Bileşeni
-Mevcut statik hero'nun üstüne veya yerine otomatik geçişli bir banner/slider eklenecek. 3 slide ile dönecek:
+Ana sayfadaki (`Index.tsx`) hero slider bileşenini konfigüratör sayfasının (`Configurator.tsx`) üst kısmına ekleyeceğiz. Mevcut breadcrumb + statik hero kısmı kaldırılıp yerine aynı premium slider gelecek.
 
-**Slide 1** — Anahtar Teslim Üretim Tesisleri (mevcut hero içeriği)
-**Slide 2** — Konfigüratör tanıtımı ("Üretim hattınızı online konfigüre edin" → /konfigurator linki)
-**Slide 3** — Referanslar / 30+ ülke ("Dünya genelinde 30+ ülkede üretim çözümleri")
+### Değişiklikler
+
+**`src/pages/Configurator.tsx`**:
+- Slider state'i ekle (`currentSlide`, `useEffect` auto-rotate, `useCallback`)
+- Mevcut breadcrumb + statik hero bölümünü kaldır
+- Yerine `Index.tsx`'deki hero section'ın aynısını ekle (navy-deep arka plan, 2 sütun layout, 3 slide, dot navigasyon)
+- Sağ sütundaki "WE SUPPORT" listesi yerine konfigüratöre özel 4 madde koyulabilir (Salça & Domates, Sos Hatları, Süt Prosesi, Dolum & Paketleme — mevcut tab'lara karşılık)
+- Slider içerikleri konfigüratöre uygun olacak (ör. "Üretim hattınızı konfigüre edin", "Salça hatları", "Sos & süt prosesi")
+- Tabs bölümü slider'ın altında aynen kalacak
+
+**`src/contexts/LanguageContext.tsx`**:
+- Konfigüratör sayfası slider'ı için yeni TR/EN çeviri anahtarları
 
 ### Teknik Detaylar
-- `useState` + `useEffect` ile 5 saniyede bir otomatik geçiş
-- Alt kısımda dot navigasyon (tıklanabilir)
-- Geçiş animasyonu: `opacity` + `translate` ile fade/slide efekti (CSS transition)
-- Her slide: tam genişlik, `bg-navy-deep`, farklı içerik/ikon/CTA
-- Mevcut 2 sütunlu hero layout korunur, sadece sol taraf içeriği slide'a göre değişir
-- Mobil uyumlu
-
-### Dosyalar
+- Slider: `useState` + `useEffect` ile 5sn auto-rotate
+- Geçiş: `opacity` + `translateY` CSS transition (700ms)
+- Dot navigasyon: tıklanabilir, aktif dot genişler
+- Radial gradient arka plan pattern
+- Mobil uyumlu: `lg:grid-cols-2` → tek sütun
 
 | Dosya | Değişiklik |
 |---|---|
-| `src/pages/Index.tsx` | Hero section'a slider state + 3 slide içeriği + dot navigasyon + auto-rotate |
-| `src/contexts/LanguageContext.tsx` | Slide 2 ve 3 için TR/EN çeviri anahtarları |
+| `src/pages/Configurator.tsx` | Statik hero → slider hero, slider state/logic, premium 2-sütun layout |
+| `src/contexts/LanguageContext.tsx` | Konfigüratör slider çeviri anahtarları |
 
