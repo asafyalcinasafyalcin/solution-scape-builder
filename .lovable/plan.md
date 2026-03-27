@@ -1,81 +1,58 @@
 
 
-# PROCESSTÜRK Web Sitesi - Uygulama Planı
+# Dolum & Paketleme - İnteraktif Hat Oluşturucu
 
-## 🎨 Tasarım Yaklaşımı
-- **Renk Paleti**: Logodaki koyu lacivert (#1e3a5f) ve kırmızı (#c4293c) ana renkler olarak kullanılacak
-- **Endüstriyel Stil**: Güçlü tipografi, keskin hatlar, makine/fabrika görselleri için yer tutucular
-- **Profesyonel B2B Görünüm**: Net bilgi hiyerarşisi, güven veren yapı
+## Konsept
+Kullanıcılar adım adım kendi dolum hattını oluşturabilecek bir "Line Builder" arayüzü. Sayfanın üst kısmında mevcut makine kataloğu kalacak, altına interaktif hat oluşturucu eklenecek.
 
-## 🌐 Dil Sistemi
-- Türkçe/İngilizce dil değiştirici (header'da)
-- URL'ler aynı kalacak, içerik dinamik olarak değişecek
+## Hat Oluşturucu Akışı (4 Adım)
 
----
+**Adım 1 - Ürün Tipi Seç**
+- Sıvı (su, süt, meyve suyu)
+- Yarı akışkan (yoğurt, bal, reçel)
+- Viskoz (salça, ketçap, mayonez)
+- Toz / Granül
 
-## 📄 Sayfa Yapısı
+**Adım 2 - Kapasite Seç**
+- Küçük (500-2.000 adet/saat)
+- Orta (2.000-5.000 adet/saat)
+- Büyük (5.000-10.000 adet/saat)
+- Endüstriyel (10.000+ adet/saat)
 
-### 1. Ana Sayfa
-- Hero bölümü: "Anahtar Teslim Üretim Tesisleri" başlığı
-- 3 hızlı erişim kartı (Hazır Hat, Tekil Makine, Özel Proje)
-- "Nasıl Çalışıyoruz?" - 6 adımlı süreç görseli
-- Hızlı teklif CTA bandı
+**Adım 3 - Ambalaj Tipi Seç**
+- Cam Şişe
+- Pet Şişe
+- Teneke Kutu
+- Pouch / Doypack
+- Kavanoz
+- Bidon / IBC
 
-### 2. Çözümler
-- 3 ana çözüm kategorisi kartları
-- Her kategori için detaylı açıklama
+**Adım 4 - Hat Ekipmanları Seç**
+Seçimlere göre önerilen makineler otomatik işaretlenir, kullanıcı ekleyip çıkarabilir:
+- Dolum makinesi (tip otomatik önerilir)
+- Kapak kapama (ambalaja göre önerilir)
+- Etiketleme
+- Shrink ambalaj
+- Konveyör sistemi
+- UV / Sterilizasyon
+- Birikim masası
 
-### 3. Hazır Hatlar (Hub + Alt Sayfalar)
-- **Hub Sayfası**: İki ana kategori kartı
-- **Salça & Domates**: MACLINE serileri (ECO, PLUS, PRO, PREMIUM, JUICE) + karşılaştırma tablosu
-- **Mayonez, Ketçap & Sos**: SAUCE serileri (500, 1000, 1500) + karşılaştırma tablosu
+## Özet & Teklif
+Seçimler tamamlandığında görsel bir hat özeti gösterilir (seçilen makineler sıralı akış şeklinde). "Bu Hat İçin Teklif Al" butonu ile seçimler iletişim formuna parametre olarak aktarılır (mailto veya Contact sayfasına yönlendirme).
 
-### 4. Tekil Makineler (Hub + Alt Sayfalar)
-- **Süt Prosesi**: Homojenizatör, separatör, pastörizatör vb. ürün listesi
-- **Dolum & Paketleme**: Dolum, kapak kapama, etiketleme makineleri
+## Teknik Detaylar
 
-### 5. Özel Projeler
-- Hero: "Katalogla sınırlı değiliz" mesajı
-- 5 adımlı proje süreci görseli
-- Proje türleri listesi
-- Detaylı başvuru formu (e-posta gönderimi)
+### Dosya Değişiklikleri
+1. **`src/pages/FillingMachines.tsx`** - Mevcut sayfa korunur, altına `<LineBuilder />` bileşeni eklenir
+2. **`src/components/filling/LineBuilder.tsx`** (yeni) - Ana hat oluşturucu bileşeni. State ile adım yönetimi, seçim mantığı, öneri algoritması
+3. **`src/components/filling/LineBuilderStep.tsx`** (yeni) - Tekrar kullanılabilir adım kartı bileşeni
+4. **`src/components/filling/LineSummary.tsx`** (yeni) - Seçim özeti ve görsel akış diyagramı
+5. **`src/contexts/LanguageContext.tsx`** - Hat oluşturucu için TR/EN çeviri anahtarları eklenir
 
-### 6. Hizmetler
-- 7 hizmet kategorisi kartları
-- Her birinin kısa açıklaması
-
-### 7. Referanslar
-- Kategori bazlı filtreleme (Gıda, Süt, Özel Projeler)
-- Proje kartları grid görünümü
-
-### 8. Kurumsal
-- Hakkımızda
-- Vizyon, Misyon, Değerler
-- Neden Türkiye Üreticileri?
-- Ekip & Süreç Yönetimi
-
-### 9. Blog / Rehber
-- Blog listesi kartları
-- Örnek makale sayfası yapısı
-
-### 10. İletişim
-- WhatsApp hızlı iletişim butonu
-- Teklif formu (e-posta gönderimi)
-- Ofis bilgileri
-
----
-
-## 🧭 Navigasyon
-- Sticky header, mega-menü desteği
-- Mobil hamburger menü
-- Dil değiştirici
-- Logo: Paylaştığınız PROCESSTÜRK logosu
-
-## 🔧 Teknik Özellikler
-- React Router ile sayfa yönlendirmesi
-- Dil context'i ile çift dil yönetimi
-- WhatsApp entegrasyonu (harici link)
-- E-posta formu (mailto veya form servisi)
-- Responsive tasarım (mobil öncelikli)
-- Karşılaştırma tabloları (MACLINE, SAUCE serileri)
+### UI Tasarımı
+- Stepper/progress bar ile adım takibi
+- Kart bazlı seçim (tıkla-seç, çoklu seçim desteği)
+- Seçili öğeler accent rengiyle vurgulanır
+- Özet bölümünde yatay akış diyagramı (makine ikonları → oklar)
+- Mobil uyumlu: dikey akış
 
