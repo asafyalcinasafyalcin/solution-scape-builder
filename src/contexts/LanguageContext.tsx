@@ -236,7 +236,7 @@ const translations: Record<Language, Record<string, string>> = {
     'card.customProject.title': 'Start Custom Project',
     'card.customProject.desc': 'Industry-independent turnkey solutions',
     
-    // Process Steps
+    'process.label': 'PROCESS',
     'process.title': 'How We Work',
     'process.step1': 'Analysis',
     'process.step2': 'Concept',
@@ -246,8 +246,9 @@ const translations: Record<Language, Record<string, string>> = {
     'process.step6': 'Growth',
     
     // CTA
+    'cta.label': 'GET STARTED',
     'cta.title': 'Describe your project in 2 minutes',
-    'cta.subtitle': 'Free preliminary evaluation',
+    'cta.subtitle': 'Free preliminary evaluation and technical consultancy',
     'cta.button': 'Quick Quote',
     
     // Solutions
