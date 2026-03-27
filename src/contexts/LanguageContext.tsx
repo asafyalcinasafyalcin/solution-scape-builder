@@ -23,11 +23,25 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'İletişim',
     
     // Hero
-    'hero.title': 'Anahtar Teslim Üretim Tesisleri',
-    'hero.subtitle': 'Hazır Hatlar • Tekil Makineler • Özel Projeler',
+    'hero.label': 'ENDÜSTRİYEL ÇÖZÜMLER',
+    'hero.line1': 'Üretim Projeniz İçin',
+    'hero.line2': 'Teklif Alın',
     'hero.description': 'Gıda üretiminden sektör bağımsız projelere kadar, ihtiyaca göre tasarlanan ve sahada çalışan sistemler kuruyoruz.',
-    'hero.cta': 'Teklif Al',
-    'hero.learnMore': 'Daha Fazla',
+    'hero.cta': 'Proje Detaylarını Gönderin',
+    'hero.learnMore': 'Çözümleri İncele',
+    'hero.weSupport': 'DESTEKLENEN ALANLAR',
+    'hero.support.readyLines': 'Hazır Üretim Hatları',
+    'hero.support.readyLines.desc': 'Salça, sos, domates işleme hatları',
+    'hero.support.singleMachines': 'Tekil Makineler',
+    'hero.support.singleMachines.desc': 'Süt prosesi, dolum & paketleme',
+    'hero.support.customProjects': 'Özel Projeler',
+    'hero.support.customProjects.desc': 'Sektör bağımsız anahtar teslim çözümler',
+    'hero.support.technical': 'Teknik Koordinasyon',
+    'hero.support.technical.desc': 'Mühendislik, kurulum, devreye alma',
+    'hero.feature.turnkey': 'Anahtar Teslim',
+    'hero.feature.sourcing': 'Esnek Tedarik',
+    'hero.feature.multiSector': 'Çoklu Sektör',
+    'hero.feature.proposals': 'Yapısal Teklifler',
     
     // Quick Cards
     'card.readyLine.title': 'Hazır Hat Seç',
@@ -38,6 +52,7 @@ const translations: Record<Language, Record<string, string>> = {
     'card.customProject.desc': 'Sektör bağımsız anahtar teslim çözümler',
     
     // Process Steps
+    'process.label': 'SÜREÇ',
     'process.title': 'Nasıl Çalışıyoruz?',
     'process.step1': 'Analiz',
     'process.step2': 'Konsept',
@@ -47,8 +62,9 @@ const translations: Record<Language, Record<string, string>> = {
     'process.step6': 'Büyüme',
     
     // CTA
+    'cta.label': 'BAŞLAYIN',
     'cta.title': 'Projenizi 2 dakikada tarif edin',
-    'cta.subtitle': 'Ücretsiz ön değerlendirme',
+    'cta.subtitle': 'Ücretsiz ön değerlendirme ve teknik danışmanlık',
     'cta.button': 'Hızlı Teklif Al',
     
     // Solutions
