@@ -54,8 +54,8 @@ const LineSummary = ({ productType, capacity, packaging, packagingVolume, equipm
 
   if (sent) {
     return (
-      <div className="rounded-xl border-2 border-green-500/50 bg-green-50 dark:bg-green-950/20 p-8 text-center">
-        <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+      <div className="rounded-xl border-2 border-accent/50 bg-accent/5 p-8 text-center">
+        <CheckCircle className="h-16 w-16 text-accent mx-auto mb-4" />
         <h3 className="text-xl font-bold mb-2">{t('lineBuilder.quote.sent')}</h3>
         <p className="text-muted-foreground">{t('lineBuilder.quote.sentDesc')}</p>
       </div>
