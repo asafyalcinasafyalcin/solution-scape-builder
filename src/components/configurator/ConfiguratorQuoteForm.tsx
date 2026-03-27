@@ -29,7 +29,6 @@ const ConfiguratorQuoteForm = ({ configSummary, activeTab }: ConfiguratorQuoteFo
     if (configSummary.capacity) lines.push(`Kapasite: ${configSummary.capacity}`);
     if (configSummary.products) lines.push(`Ürünler: ${configSummary.products}`);
     if (configSummary.usage) lines.push(`Kullanım: ${configSummary.usage}`);
-    // Filling line builder fields
     if (configSummary.productType) lines.push(`Ürün Tipi: ${configSummary.productType}`);
     if (configSummary.packaging) lines.push(`Ambalaj: ${configSummary.packaging}`);
     if (configSummary.volume) lines.push(`Hacim: ${configSummary.volume}`);
@@ -61,29 +60,34 @@ const ConfiguratorQuoteForm = ({ configSummary, activeTab }: ConfiguratorQuoteFo
 
   if (sent) {
     return (
-      <div className="rounded-xl border-2 border-accent/50 bg-accent/5 p-8 text-center">
-        <CheckCircle className="h-16 w-16 text-accent mx-auto mb-4" />
+      <div className="rounded-2xl border-2 border-amber/50 bg-amber/5 p-8 text-center shadow-premium-lg">
+        <CheckCircle className="h-16 w-16 text-amber mx-auto mb-4" />
         <h3 className="text-xl font-bold mb-2">{t('lineBuilder.quote.sent')}</h3>
-        <p className="text-muted-foreground">{t('lineBuilder.quote.sentDesc')}</p>
+        <p className="text-steel">{t('lineBuilder.quote.sentDesc')}</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border-2 border-accent bg-accent/5 p-6 md:p-8">
-      <h3 className="text-xl font-bold mb-2">
-        {language === 'tr' ? 'Teklif Talebi' : 'Quote Request'}
+    <div className="rounded-2xl border-2 border-t-2 border-amber/30 border-t-amber bg-card p-6 md:p-8 shadow-premium-lg">
+      <span className="text-xs font-bold uppercase tracking-[0.25em] text-amber mb-2 block">
+        {language === 'tr' ? 'TEKLİF TALEBİ' : 'QUOTE REQUEST'}
+      </span>
+      <h3 className="text-2xl font-light mb-2">
+        {language === 'tr' ? 'Konfigürasyonunuz için teklif alın' : 'Get a quote for your configuration'}
       </h3>
-      <p className="text-sm text-muted-foreground mb-6">
+      <p className="text-sm text-steel mb-6">
         {language === 'tr'
           ? 'Yukarıdaki konfigürasyonunuza göre teklif almak için bilgilerinizi doldurun.'
           : 'Fill in your information to get a quote based on your configuration above.'}
       </p>
 
       {hasConfig && (
-        <div className="rounded-lg bg-background border p-4 mb-6">
-          <h4 className="text-sm font-bold mb-2">{language === 'tr' ? 'Seçilen Konfigürasyon' : 'Selected Configuration'}</h4>
-          <pre className="text-xs text-muted-foreground whitespace-pre-wrap">{configText()}</pre>
+        <div className="rounded-xl bg-warm-gray border border-border-strong p-4 mb-6">
+          <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-amber mb-2">
+            {language === 'tr' ? 'Seçilen Konfigürasyon' : 'Selected Configuration'}
+          </h4>
+          <pre className="text-xs text-steel whitespace-pre-wrap">{configText()}</pre>
         </div>
       )}
 
@@ -91,41 +95,41 @@ const ConfiguratorQuoteForm = ({ configSummary, activeTab }: ConfiguratorQuoteFo
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="cfg-name" className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
+              <User className="h-4 w-4 text-steel" />
               {t('contact.form.name')} *
             </Label>
-            <Input id="cfg-name" required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} />
+            <Input id="cfg-name" required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className="border-border-strong" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="cfg-company" className="flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-muted-foreground" />
+              <Building2 className="h-4 w-4 text-steel" />
               {t('contact.form.company')}
             </Label>
-            <Input id="cfg-company" value={form.company} onChange={e => setForm(p => ({ ...p, company: e.target.value }))} />
+            <Input id="cfg-company" value={form.company} onChange={e => setForm(p => ({ ...p, company: e.target.value }))} className="border-border-strong" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="cfg-email" className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground" />
+              <Mail className="h-4 w-4 text-steel" />
               {t('contact.form.email')} *
             </Label>
-            <Input id="cfg-email" type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
+            <Input id="cfg-email" type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className="border-border-strong" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="cfg-phone" className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-muted-foreground" />
+              <Phone className="h-4 w-4 text-steel" />
               {t('contact.form.phone')}
             </Label>
-            <Input id="cfg-phone" type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} />
+            <Input id="cfg-phone" type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className="border-border-strong" />
           </div>
         </div>
         <div className="space-y-2">
           <Label htmlFor="cfg-note" className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <FileText className="h-4 w-4 text-steel" />
             {language === 'tr' ? 'Ek Not / Özel İstekler' : 'Additional Notes'}
           </Label>
-          <Textarea id="cfg-note" rows={3} value={form.note} onChange={e => setForm(p => ({ ...p, note: e.target.value }))} />
+          <Textarea id="cfg-note" rows={3} value={form.note} onChange={e => setForm(p => ({ ...p, note: e.target.value }))} className="border-border-strong" />
         </div>
-        <Button type="submit" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground text-base px-8 py-6">
+        <Button type="submit" size="lg" className="bg-amber hover:bg-amber-dark text-amber-foreground text-base px-8 py-6 shadow-premium transition-all duration-300 hover:shadow-premium-lg hover:scale-[1.02]">
           <Send className="mr-2 h-5 w-5" />
           {t('lineBuilder.quote.submit')}
         </Button>
