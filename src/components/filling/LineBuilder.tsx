@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import {
   Droplets, Gauge, Package, Wrench, Beaker, Wind, FlaskRound,
   Wheat, GaugeCircle, Factory, Zap, Wine, Cylinder, Box,
-  Jar as JarIcon, Container, Ruler,
+  Package as JarIcon, Container, Ruler,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
