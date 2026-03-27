@@ -1,52 +1,31 @@
 
 
-# Ana Sayfa Premium Tasarım + Hero Slider Güncellemesi
+# Ana Sayfa Hero Banner/Slider Ekleme
 
-## 1. Ana Sayfa Hero - Referans Stilinde Yeniden Tasarım
+## Mevcut Durum
+Ana sayfa şu an referans görseldeki gibi statik bir hero section'a sahip. Kullanıcı daha önce "en üst kısma bir ana sayfa slider'ı gibi bir şey ekle" demişti ama bu henüz eklenmemiş.
 
-Mevcut hero section'ı referans görseldeki gibi koyu navy (`bg-navy-deep`) arka planlı, 2 sütunlu layout'a dönüştüreceğiz:
+## Plan
 
-**Sol taraf:**
-- `INDUSTRIAL SOLUTIONS` / `ENDÜSTRİYEL ÇÖZÜMLER` — `tracking-[0.25em] uppercase text-amber` etiket
-- `Request a Proposal for` — `font-light text-4xl`
-- `Your Production Project` — `font-bold italic text-5xl` (amber alt çizgi)
-- Açıklama metni — `text-steel`
-- 2 buton: `SEND PROJECT DETAILS` (amber bg) + `Explore Solutions` (ghost)
+### Hero Slider Bileşeni
+Mevcut statik hero'nun üstüne veya yerine otomatik geçişli bir banner/slider eklenecek. 3 slide ile dönecek:
 
-**Sag taraf:**
-- "WE SUPPORT" kart listesi — koyu kart arka plan, her item'da amber tonlu ikon + baslik + aciklama
-- Items: Ready Lines, Single Machines, Custom Projects, Technical Coordination
+**Slide 1** — Anahtar Teslim Üretim Tesisleri (mevcut hero içeriği)
+**Slide 2** — Konfigüratör tanıtımı ("Üretim hattınızı online konfigüre edin" → /konfigurator linki)
+**Slide 3** — Referanslar / 30+ ülke ("Dünya genelinde 30+ ülkede üretim çözümleri")
 
-**Alt bar:**
-- 4 ikon + metin: Turnkey Coordination, Flexible Sourcing, Multi-Sector Expertise, Structured Proposals
-- Amber ikonlar, `tracking-[0.15em] uppercase text-xs` etiketler
+### Teknik Detaylar
+- `useState` + `useEffect` ile 5 saniyede bir otomatik geçiş
+- Alt kısımda dot navigasyon (tıklanabilir)
+- Geçiş animasyonu: `opacity` + `translate` ile fade/slide efekti (CSS transition)
+- Her slide: tam genişlik, `bg-navy-deep`, farklı içerik/ikon/CTA
+- Mevcut 2 sütunlu hero layout korunur, sadece sol taraf içeriği slide'a göre değişir
+- Mobil uyumlu
 
-## 2. Quick Access Cards - Premium Stil
+### Dosyalar
 
-Mevcut kartlara premium tasarim uygula:
-- `border-t-2 border-t-amber/30`, `shadow-premium`
-- Gradient navy ikon kutulari (`bg-gradient-to-br from-navy-deep to-navy`)
-- `hover:shadow-premium-lg hover:scale-[1.02]` animasyonlar
-
-## 3. Process Steps - Premium Stil
-
-- Arka plan: `bg-navy-deep` yerine koyu navy gradient
-- Step ikonlari: amber hover efekti, gradient ikon kutulari
-- Baslık: `font-light`, üstte `tracking-[0.25em] uppercase` etiket
-
-## 4. CTA Banner - Premium Stil
-
-- `bg-gradient-to-r from-amber to-amber-dark` arka plan
-- Veya navy arka plan + amber buton kombinasyonu
-
-## 5. Konfigüratör Mobil Kontrol + Test
-
-Konfigüratör sayfasındaki tablo ve slider'ların mobil uyumluluğu kontrol edilecek, gerekirse `overflow-x-auto` ve responsive düzeltmeler yapılacak.
-
-## Dosya Listesi
-
-| Dosya | Degisiklik |
+| Dosya | Değişiklik |
 |---|---|
-| `src/pages/Index.tsx` | Hero section yeniden tasarım (referans stilinde 2 sütun), kartlar premium stil, process steps premium, CTA güncelleme |
-| `src/contexts/LanguageContext.tsx` | Yeni hero çeviri anahtarları (TR/EN) |
+| `src/pages/Index.tsx` | Hero section'a slider state + 3 slide içeriği + dot navigasyon + auto-rotate |
+| `src/contexts/LanguageContext.tsx` | Slide 2 ve 3 için TR/EN çeviri anahtarları |
 
