@@ -61,14 +61,27 @@
     --navy: 211 52% 24%;
     --navy-dark: 211 52% 15%;
     --navy-light: 211 40% 35%;
+    --navy-deep: 222 58% 8%;
     --red: 353 65% 47%;
     --red-dark: 353 65% 38%;
     --red-light: 353 55% 55%;
+    
+    /* Premium accent (amber-red) */
+    --amber: 345 100% 60%;
+    --amber-dark: 345 90% 50%;
+    --amber-foreground: 0 0% 100%;
+    
+    /* Neutral tones */
+    --steel: 215 18% 52%;
+    --warm-gray: 220 10% 96%;
+    --surface: 220 15% 98%;
+    --border-strong: 220 15% 78%;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--navy)) 0%, hsl(var(--navy-dark)) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(var(--red)) 0%, hsl(var(--red-dark)) 100%);
     --gradient-hero: linear-gradient(180deg, hsl(var(--navy-dark)) 0%, hsl(var(--navy)) 50%, hsl(var(--navy-light)) 100%);
+    --gradient-navy: linear-gradient(135deg, hsl(var(--navy-deep)) 0%, hsl(var(--navy-dark)) 100%);
     
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(var(--navy) / 0.05);
@@ -127,9 +140,21 @@
     --navy: 210 40% 85%;
     --navy-dark: 210 40% 98%;
     --navy-light: 210 40% 70%;
+    --navy-deep: 222 58% 12%;
     --red: 353 65% 55%;
     --red-dark: 353 65% 47%;
     --red-light: 353 55% 65%;
+    
+    /* Premium accent */
+    --amber: 345 100% 65%;
+    --amber-dark: 345 90% 55%;
+    --amber-foreground: 0 0% 100%;
+    
+    /* Neutral tones */
+    --steel: 215 18% 65%;
+    --warm-gray: 220 10% 18%;
+    --surface: 220 15% 14%;
+    --border-strong: 220 15% 30%;
   }
 }
 
