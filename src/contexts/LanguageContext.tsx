@@ -23,11 +23,25 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'İletişim',
     
     // Hero
-    'hero.title': 'Anahtar Teslim Üretim Tesisleri',
-    'hero.subtitle': 'Hazır Hatlar • Tekil Makineler • Özel Projeler',
+    'hero.label': 'ENDÜSTRİYEL ÇÖZÜMLER',
+    'hero.line1': 'Üretim Projeniz İçin',
+    'hero.line2': 'Teklif Alın',
     'hero.description': 'Gıda üretiminden sektör bağımsız projelere kadar, ihtiyaca göre tasarlanan ve sahada çalışan sistemler kuruyoruz.',
-    'hero.cta': 'Teklif Al',
-    'hero.learnMore': 'Daha Fazla',
+    'hero.cta': 'Proje Detaylarını Gönderin',
+    'hero.learnMore': 'Çözümleri İncele',
+    'hero.weSupport': 'DESTEKLENEN ALANLAR',
+    'hero.support.readyLines': 'Hazır Üretim Hatları',
+    'hero.support.readyLines.desc': 'Salça, sos, domates işleme hatları',
+    'hero.support.singleMachines': 'Tekil Makineler',
+    'hero.support.singleMachines.desc': 'Süt prosesi, dolum & paketleme',
+    'hero.support.customProjects': 'Özel Projeler',
+    'hero.support.customProjects.desc': 'Sektör bağımsız anahtar teslim çözümler',
+    'hero.support.technical': 'Teknik Koordinasyon',
+    'hero.support.technical.desc': 'Mühendislik, kurulum, devreye alma',
+    'hero.feature.turnkey': 'Anahtar Teslim',
+    'hero.feature.sourcing': 'Esnek Tedarik',
+    'hero.feature.multiSector': 'Çoklu Sektör',
+    'hero.feature.proposals': 'Yapısal Teklifler',
     
     // Quick Cards
     'card.readyLine.title': 'Hazır Hat Seç',
@@ -38,6 +52,7 @@ const translations: Record<Language, Record<string, string>> = {
     'card.customProject.desc': 'Sektör bağımsız anahtar teslim çözümler',
     
     // Process Steps
+    'process.label': 'SÜREÇ',
     'process.title': 'Nasıl Çalışıyoruz?',
     'process.step1': 'Analiz',
     'process.step2': 'Konsept',
@@ -47,8 +62,9 @@ const translations: Record<Language, Record<string, string>> = {
     'process.step6': 'Büyüme',
     
     // CTA
+    'cta.label': 'BAŞLAYIN',
     'cta.title': 'Projenizi 2 dakikada tarif edin',
-    'cta.subtitle': 'Ücretsiz ön değerlendirme',
+    'cta.subtitle': 'Ücretsiz ön değerlendirme ve teknik danışmanlık',
     'cta.button': 'Hızlı Teklif Al',
     
     // Solutions
@@ -192,11 +208,25 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'Contact',
     
     // Hero
-    'hero.title': 'Turnkey Production Facilities',
-    'hero.subtitle': 'Ready Lines • Single Machines • Custom Projects',
+    'hero.label': 'INDUSTRIAL SOLUTIONS',
+    'hero.line1': 'Request a Proposal for',
+    'hero.line2': 'Your Production Project',
     'hero.description': 'From food production to industry-independent projects, we design and install systems tailored to your needs.',
-    'hero.cta': 'Get Quote',
-    'hero.learnMore': 'Learn More',
+    'hero.cta': 'Send Project Details',
+    'hero.learnMore': 'Explore Solutions',
+    'hero.weSupport': 'WE SUPPORT',
+    'hero.support.readyLines': 'Ready Production Lines',
+    'hero.support.readyLines.desc': 'Tomato paste, sauce, tomato processing lines',
+    'hero.support.singleMachines': 'Single Machines',
+    'hero.support.singleMachines.desc': 'Dairy process, filling & packaging',
+    'hero.support.customProjects': 'Custom Projects',
+    'hero.support.customProjects.desc': 'Industry-independent turnkey solutions',
+    'hero.support.technical': 'Technical Coordination',
+    'hero.support.technical.desc': 'Engineering, installation, commissioning',
+    'hero.feature.turnkey': 'Turnkey Coordination',
+    'hero.feature.sourcing': 'Flexible Sourcing',
+    'hero.feature.multiSector': 'Multi-Sector Expertise',
+    'hero.feature.proposals': 'Structured Proposals',
     
     // Quick Cards
     'card.readyLine.title': 'Select Ready Line',
@@ -206,7 +236,7 @@ const translations: Record<Language, Record<string, string>> = {
     'card.customProject.title': 'Start Custom Project',
     'card.customProject.desc': 'Industry-independent turnkey solutions',
     
-    // Process Steps
+    'process.label': 'PROCESS',
     'process.title': 'How We Work',
     'process.step1': 'Analysis',
     'process.step2': 'Concept',
@@ -216,8 +246,9 @@ const translations: Record<Language, Record<string, string>> = {
     'process.step6': 'Growth',
     
     // CTA
+    'cta.label': 'GET STARTED',
     'cta.title': 'Describe your project in 2 minutes',
-    'cta.subtitle': 'Free preliminary evaluation',
+    'cta.subtitle': 'Free preliminary evaluation and technical consultancy',
     'cta.button': 'Quick Quote',
     
     // Solutions
