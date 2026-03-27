@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import LineBuilder from '@/components/filling/LineBuilder';
 
 const FillingMachines = () => {
   const { t } = useLanguage();
@@ -92,8 +93,11 @@ const FillingMachines = () => {
           ))}
         </div>
 
+        {/* Line Builder */}
+        <LineBuilder />
+
         {/* CTA Section */}
-        <div className="rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12">
+        <div className="rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12 mt-16">
           <h2 className="text-2xl font-bold sm:text-3xl mb-4">
             Komple dolum hattı mı planlıyorsunuz?
           </h2>
