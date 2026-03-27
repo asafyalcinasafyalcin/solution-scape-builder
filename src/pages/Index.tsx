@@ -1,11 +1,55 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Factory, Cog, Lightbulb, Search, PenTool, Truck, Settings, Play, TrendingUp, Layers, Package, Wrench, FileText } from 'lucide-react';
+import { ArrowRight, Factory, Cog, Lightbulb, Search, PenTool, Truck, Settings, Play, TrendingUp, Layers, Package, Wrench, FileText, Globe, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const { t } = useLanguage();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      label: t('hero.label'),
+      line1: t('hero.line1'),
+      line2: t('hero.line2'),
+      description: t('hero.description'),
+      ctaText: t('hero.cta'),
+      ctaLink: '/iletisim',
+      secondaryText: t('hero.learnMore'),
+      secondaryLink: '/cozumler',
+    },
+    {
+      label: t('hero.slide2.label'),
+      line1: t('hero.slide2.line1'),
+      line2: t('hero.slide2.line2'),
+      description: t('hero.slide2.description'),
+      ctaText: t('hero.slide2.cta'),
+      ctaLink: '/konfigurator',
+      secondaryText: t('hero.slide2.secondary'),
+      secondaryLink: '/cozumler',
+    },
+    {
+      label: t('hero.slide3.label'),
+      line1: t('hero.slide3.line1'),
+      line2: t('hero.slide3.line2'),
+      description: t('hero.slide3.description'),
+      ctaText: t('hero.slide3.cta'),
+      ctaLink: '/referanslar',
+      secondaryText: t('hero.slide3.secondary'),
+      secondaryLink: '/kurumsal',
+    },
+  ];
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   const supportItems = [
     {
@@ -80,31 +124,59 @@ const Index = () => {
 
         <div className="container relative z-10 py-16 lg:py-24">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Column */}
-            <div>
-              <span className="inline-block text-amber tracking-[0.25em] uppercase text-xs font-semibold mb-4">
-                {t('hero.label')}
-              </span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white/90 mb-2 animate-fade-in">
-                {t('hero.line1')}
-              </h1>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold italic text-white mb-2 animate-fade-in">
-                {t('hero.line2')}
-                <span className="block h-1 w-24 bg-amber mt-3 rounded-full" />
-              </h2>
-              <p className="text-steel text-lg max-w-xl mt-6 mb-8 animate-fade-in">
-                {t('hero.description')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up">
-                <Button asChild size="lg" className="bg-amber hover:bg-amber-dark text-white text-base px-8 tracking-wide">
-                  <Link to="/iletisim">
-                    {t('hero.cta')}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 text-base px-8">
-                  <Link to="/cozumler">{t('hero.learnMore')}</Link>
-                </Button>
+            {/* Left Column - Slider */}
+            <div className="relative min-h-[320px]">
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className="absolute inset-0 transition-all duration-700 ease-in-out"
+                  style={{
+                    opacity: currentSlide === index ? 1 : 0,
+                    transform: currentSlide === index ? 'translateY(0)' : 'translateY(20px)',
+                    pointerEvents: currentSlide === index ? 'auto' : 'none',
+                  }}
+                >
+                  <span className="inline-block text-amber tracking-[0.25em] uppercase text-xs font-semibold mb-4">
+                    {slide.label}
+                  </span>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white/90 mb-2">
+                    {slide.line1}
+                  </h1>
+                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold italic text-white mb-2">
+                    {slide.line2}
+                    <span className="block h-1 w-24 bg-amber mt-3 rounded-full" />
+                  </h2>
+                  <p className="text-steel text-lg max-w-xl mt-6 mb-8">
+                    {slide.description}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild size="lg" className="bg-amber hover:bg-amber-dark text-white text-base px-8 tracking-wide">
+                      <Link to={slide.ctaLink}>
+                        {slide.ctaText}
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 text-base px-8">
+                      <Link to={slide.secondaryLink}>{slide.secondaryText}</Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              {/* Dot Navigation */}
+              <div className="absolute -bottom-2 left-0 flex gap-3">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      currentSlide === index
+                        ? 'w-8 bg-amber'
+                        : 'w-2.5 bg-white/30 hover:bg-white/50'
+                    }`}
+                    aria-label={`Slide ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
 
