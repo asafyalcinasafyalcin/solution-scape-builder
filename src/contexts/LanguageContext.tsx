@@ -43,6 +43,20 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.feature.multiSector': 'Çoklu Sektör',
     'hero.feature.proposals': 'Yapısal Teklifler',
     
+    // Hero Slides
+    'hero.slide2.label': 'ONLİNE KONFİGÜRATÖR',
+    'hero.slide2.line1': 'Üretim Hattınızı',
+    'hero.slide2.line2': 'Online Konfigüre Edin',
+    'hero.slide2.description': 'Salça, sos, süt ve dolum hatları için interaktif konfigüratörümüzle ihtiyacınıza uygun hattı oluşturun.',
+    'hero.slide2.cta': 'Konfigüratörü Aç',
+    'hero.slide2.secondary': 'Çözümleri İncele',
+    'hero.slide3.label': 'GLOBAL REFERANSLAR',
+    'hero.slide3.line1': '30+ Ülkede',
+    'hero.slide3.line2': 'Üretim Çözümleri',
+    'hero.slide3.description': 'Dünya genelinde tamamlanmış projeler ve güvenilir iş ortaklıkları ile sektörde fark yaratıyoruz.',
+    'hero.slide3.cta': 'Referansları Gör',
+    'hero.slide3.secondary': 'Bizi Tanıyın',
+    
     // Quick Cards
     'card.readyLine.title': 'Hazır Hat Seç',
     'card.readyLine.desc': 'Salça, domates, mayonez, ketçap ve sos üretim hatları',
@@ -227,6 +241,20 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.feature.sourcing': 'Flexible Sourcing',
     'hero.feature.multiSector': 'Multi-Sector Expertise',
     'hero.feature.proposals': 'Structured Proposals',
+    
+    // Hero Slides
+    'hero.slide2.label': 'ONLINE CONFIGURATOR',
+    'hero.slide2.line1': 'Configure Your',
+    'hero.slide2.line2': 'Production Line Online',
+    'hero.slide2.description': 'Build your ideal line with our interactive configurator for tomato paste, sauce, dairy and filling systems.',
+    'hero.slide2.cta': 'Open Configurator',
+    'hero.slide2.secondary': 'Explore Solutions',
+    'hero.slide3.label': 'GLOBAL REFERENCES',
+    'hero.slide3.line1': 'Production Solutions in',
+    'hero.slide3.line2': '30+ Countries',
+    'hero.slide3.description': 'Making a difference in the industry with completed projects and trusted partnerships worldwide.',
+    'hero.slide3.cta': 'View References',
+    'hero.slide3.secondary': 'About Us',
     
     // Quick Cards
     'card.readyLine.title': 'Select Ready Line',
