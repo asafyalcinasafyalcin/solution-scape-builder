@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
-import LineBuilder from '@/components/filling/LineBuilder';
 
 const FillingMachines = () => {
   const { t } = useLanguage();
@@ -93,20 +92,17 @@ const FillingMachines = () => {
           ))}
         </div>
 
-        {/* Line Builder */}
-        <LineBuilder />
-
-        {/* CTA Section */}
+        {/* CTA Section - Configurator */}
         <div className="rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12 mt-16">
           <h2 className="text-2xl font-bold sm:text-3xl mb-4">
-            Komple dolum hattı mı planlıyorsunuz?
+            Kendi Dolum Hattınızı Oluşturun
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-6">
-            Anahtar teslim dolum ve paketleme hattı için özel proje teklifi alın.
+            İnteraktif konfigüratörümüzle ürün tipi, kapasite ve ambalaj seçerek hattınızı yapılandırın.
           </p>
           <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            <Link to="/ozel-projeler">
-              Özel Proje Başlat
+            <Link to="/konfigurator">
+              Konfigüratöre Git
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
