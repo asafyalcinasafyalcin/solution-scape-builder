@@ -45,6 +45,7 @@ const Header = () => {
         { path: '/tekil-makineler/dolum-paketleme', label: t('singleMachines.filling.title') },
       ]
     },
+    { path: '/konfigurator', label: language === 'tr' ? 'Konfigüratör' : 'Configurator' },
     { path: '/ozel-projeler', label: t('nav.customProjects') },
     { path: '/hizmetler', label: t('nav.services') },
     { path: '/referanslar', label: t('nav.references') },

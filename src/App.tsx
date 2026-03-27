@@ -12,6 +12,7 @@ import TomatoLines from "./pages/TomatoLines";
 import SauceLines from "./pages/SauceLines";
 import SingleMachines from "./pages/SingleMachines";
 import DairyMachines from "./pages/DairyMachines";
+import Configurator from "./pages/Configurator";
 import FillingMachines from "./pages/FillingMachines";
 import CustomProjects from "./pages/CustomProjects";
 import Services from "./pages/Services";
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/tekil-makineler" element={<SingleMachines />} />
               <Route path="/tekil-makineler/sut-prosesi" element={<DairyMachines />} />
               <Route path="/tekil-makineler/dolum-paketleme" element={<FillingMachines />} />
+              <Route path="/konfigurator" element={<Configurator />} />
               <Route path="/ozel-projeler" element={<CustomProjects />} />
               <Route path="/hizmetler" element={<Services />} />
               <Route path="/referanslar" element={<References />} />
