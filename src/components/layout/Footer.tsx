@@ -1,30 +1,19 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Mail, Phone, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import logo from '@/assets/logo.png';
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
-  const quickLinks = [
+  const links = [
+    { path: '/', label: language === 'tr' ? 'Ana Sayfa' : 'Home' },
     { path: '/cozumler', label: t('nav.solutions') },
-    { path: '/hazir-hatlar', label: t('nav.readyLines') },
-    { path: '/tekil-makineler', label: t('nav.singleMachines') },
-    { path: '/ozel-projeler', label: t('nav.customProjects') },
-    { path: '/hizmetler', label: t('nav.services') },
-    { path: '/referanslar', label: t('nav.references') },
-  ];
-
-  const corporateLinks = [
-    { path: '/kurumsal', label: t('corporate.about') },
-    { path: '/kurumsal#vizyon', label: t('corporate.vision') },
-    { path: '/blog', label: t('nav.blog') },
-    { path: '/iletisim', label: t('nav.contact') },
+    { path: '/konfigurator', label: language === 'tr' ? 'Konfigüratör' : 'Configurator' },
   ];
 
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-navy-deep text-white">
       {/* WhatsApp Floating Button */}
       <a
         href="https://wa.me/905551234567"
@@ -36,92 +25,48 @@ const Footer = () => {
         <MessageCircle className="h-7 w-7" />
       </a>
 
-      <div className="container py-12">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Logo & Description */}
-          <div className="space-y-4">
-            <img src={logo} alt="PROCESSTÜRK" className="h-12 w-auto brightness-0 invert" />
-            <p className="text-sm text-primary-foreground/80">
-              {t('hero.description')}
-            </p>
+      <div className="container py-10">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          {/* Logo + tagline */}
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="PROCESSTÜRK" className="h-10 w-auto brightness-0 invert" />
+            <div className="hidden sm:block">
+              <p className="text-xs tracking-[0.25em] uppercase text-amber font-semibold">processturk.com</p>
+              <p className="text-xs text-steel mt-0.5">
+                {language === 'tr' ? 'Endüstriyel proses çözümleri' : 'Industrial process solutions'}
+              </p>
+            </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">{t('footer.quickLinks')}</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/80 transition-colors hover:text-primary-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Corporate Links */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">{t('corporate.title')}</h3>
-            <ul className="space-y-2">
-              {corporateLinks.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/80 transition-colors hover:text-primary-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">{t('footer.contact')}</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-sm text-primary-foreground/80">
-                <MapPin className="h-5 w-5 shrink-0" />
-                <span>İstanbul, Türkiye</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/80">
-                <Phone className="h-5 w-5 shrink-0" />
-                <a href="tel:+905551234567" className="hover:text-primary-foreground">
-                  +90 555 123 45 67
-                </a>
-              </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/80">
-                <Mail className="h-5 w-5 shrink-0" />
-                <a href="mailto:info@processturk.com" className="hover:text-primary-foreground">
-                  info@processturk.com
-                </a>
-              </li>
-            </ul>
-            <Button
-              asChild
-              className="mt-4 w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-            >
-              <a
-                href="https://wa.me/905551234567"
-                target="_blank"
-                rel="noopener noreferrer"
+          {/* Links */}
+          <nav className="flex flex-wrap items-center gap-6">
+            {links.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="text-sm text-white/80 hover:text-amber transition-colors"
               >
-                <MessageCircle className="mr-2 h-4 w-4" />
-                {t('contact.whatsapp')}
-              </a>
-            </Button>
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Contact */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-5">
+            <a href="tel:+905551234567" className="flex items-center gap-2 text-sm text-white/80 hover:text-amber transition-colors">
+              <Phone className="h-4 w-4 text-amber" />
+              +90 555 123 45 67
+            </a>
+            <a href="mailto:info@processturk.com" className="flex items-center gap-2 text-sm text-white/80 hover:text-amber transition-colors">
+              <Mail className="h-4 w-4 text-amber" />
+              info@processturk.com
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 border-t border-primary-foreground/20 pt-6">
-          <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-primary-foreground/60 md:flex-row md:text-left">
-            <p>© {new Date().getFullYear()} PROCESSTÜRK. {t('footer.rights')}</p>
-          </div>
+        {/* Bottom bar */}
+        <div className="mt-8 border-t border-white/10 pt-5 text-center text-xs text-white/50">
+          © {new Date().getFullYear()} PROCESSTÜRK. {t('footer.rights')}
         </div>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Factory, Cog, Lightbulb, Search, PenTool, Truck, Settings, Play, TrendingUp, Layers, Package, Wrench, FileText, Globe, SlidersHorizontal } from 'lucide-react';
+import { ArrowRight, Factory, SlidersHorizontal, Lightbulb, Search, PenTool, Truck, Settings, Play, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -36,9 +36,9 @@ const Index = () => {
       line2: t('hero.slide3.line2'),
       description: t('hero.slide3.description'),
       ctaText: t('hero.slide3.cta'),
-      ctaLink: '/referanslar',
+      ctaLink: '/konfigurator',
       secondaryText: t('hero.slide3.secondary'),
-      secondaryLink: '/kurumsal',
+      secondaryLink: '/cozumler',
     },
   ];
 
@@ -51,36 +51,6 @@ const Index = () => {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
-  const supportItems = [
-    {
-      icon: Factory,
-      title: t('hero.support.readyLines'),
-      desc: t('hero.support.readyLines.desc'),
-    },
-    {
-      icon: Cog,
-      title: t('hero.support.singleMachines'),
-      desc: t('hero.support.singleMachines.desc'),
-    },
-    {
-      icon: Lightbulb,
-      title: t('hero.support.customProjects'),
-      desc: t('hero.support.customProjects.desc'),
-    },
-    {
-      icon: Wrench,
-      title: t('hero.support.technical'),
-      desc: t('hero.support.technical.desc'),
-    },
-  ];
-
-  const featureBar = [
-    { icon: Layers, label: t('hero.feature.turnkey') },
-    { icon: Package, label: t('hero.feature.sourcing') },
-    { icon: Settings, label: t('hero.feature.multiSector') },
-    { icon: FileText, label: t('hero.feature.proposals') },
-  ];
-
   const quickCards = [
     {
       icon: Factory,
@@ -89,10 +59,10 @@ const Index = () => {
       link: '/hazir-hatlar',
     },
     {
-      icon: Cog,
-      title: t('card.singleMachine.title'),
-      description: t('card.singleMachine.desc'),
-      link: '/tekil-makineler',
+      icon: SlidersHorizontal,
+      title: t('hero.slide2.line2'),
+      description: t('hero.slide2.description'),
+      link: '/konfigurator',
     },
     {
       icon: Lightbulb,
@@ -122,10 +92,10 @@ const Index = () => {
           }} />
         </div>
 
-        <div className="container relative z-10 py-16 lg:py-24">
+        <div className="container relative z-10 py-20 lg:py-28">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Column - Slider */}
-            <div className="relative min-h-[320px]">
+            <div className="relative min-h-[340px]">
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -180,45 +150,31 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right Column - WE SUPPORT */}
-            <div className="space-y-3">
-              <span className="inline-block text-amber tracking-[0.25em] uppercase text-xs font-semibold mb-2">
-                {t('hero.weSupport')}
-              </span>
-              {supportItems.map((item) => (
-                <div
-                  key={item.title}
-                  className="flex items-start gap-4 p-4 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.07] transition-all group"
-                >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-navy to-navy-deep flex items-center justify-center border border-amber/20">
-                    <item.icon className="h-5 w-5 text-amber" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-white group-hover:text-amber transition-colors">{item.title}</h3>
-                    <p className="text-xs text-steel mt-0.5">{item.desc}</p>
+            {/* Right Column - Visual */}
+            <div className="relative hidden lg:flex items-center justify-center">
+              <div className="relative w-full aspect-square max-w-md">
+                {/* Decorative concentric rings */}
+                <div className="absolute inset-0 rounded-full border border-amber/20 animate-[spin_40s_linear_infinite]" />
+                <div className="absolute inset-8 rounded-full border border-white/10 animate-[spin_30s_linear_infinite_reverse]" />
+                <div className="absolute inset-16 rounded-full border border-amber/30" />
+                {/* Center icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative w-40 h-40 rounded-full bg-gradient-to-br from-navy to-navy-deep border border-amber/40 flex items-center justify-center shadow-2xl">
+                    <Factory className="h-20 w-20 text-amber" strokeWidth={1.2} />
+                    <div className="absolute -inset-4 rounded-full bg-amber/5 blur-2xl" />
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Feature Bar */}
-        <div className="relative z-10 border-t border-white/[0.08] bg-white/[0.03]">
-          <div className="container py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {featureBar.map((item) => (
-                <div key={item.label} className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5 text-amber flex-shrink-0" />
-                  <span className="text-xs text-white/70 tracking-[0.15em] uppercase font-medium">{item.label}</span>
-                </div>
-              ))}
+                {/* Orbiting dots */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber shadow-[0_0_20px_hsl(var(--amber))]" />
+                <div className="absolute bottom-1/4 right-0 w-2 h-2 rounded-full bg-white/60" />
+                <div className="absolute bottom-1/4 left-0 w-2 h-2 rounded-full bg-white/60" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Access Cards - Premium */}
+      {/* Quick Access Cards - 3 main entries */}
       <section className="py-20 bg-background">
         <div className="container">
           <div className="grid gap-6 md:grid-cols-3">
