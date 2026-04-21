@@ -60,7 +60,7 @@ const Index = () => {
     },
     {
       icon: SlidersHorizontal,
-      title: t('LanguageContext') === 'tr' ? 'Konfigüratör' : 'Configurator',
+      title: t('hero.slide2.line2'),
       description: t('hero.slide2.description'),
       link: '/konfigurator',
     },
