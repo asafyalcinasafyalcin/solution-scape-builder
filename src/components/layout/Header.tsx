@@ -23,6 +23,7 @@ const Header = () => {
     { path: '/', label: language === 'tr' ? 'Ana Sayfa' : 'Home' },
     { path: '/cozumler', label: t('nav.solutions') },
     { path: '/konfigurator', label: language === 'tr' ? 'Konfigüratör' : 'Configurator' },
+    { path: '/sunum', label: t('sunum.nav') },
   ];
 
   return (
