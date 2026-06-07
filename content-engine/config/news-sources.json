@@ -1,0 +1,22 @@
+{
+  "_comment": "RSS kaynaklarını ve anahtar kelimeleri buradan yönetin. Aşağıdaki feed URL'leri ÖRNEKTİR — gerçek, geçerli XML dönen kaynaklarla değiştirin (Türk ekonomi/sanayi basını, gıda/paketleme sektör yayınları, ihracat/ticaret kaynakları). 'enabled: false' olanlar atlanır.",
+  "feeds": [
+    { "name": "Dünya Gazetesi", "url": "https://www.dunya.com/rss", "lang": "tr", "topic": "economy", "enabled": false },
+    { "name": "Food Engineering", "url": "https://www.foodengineeringmag.com/rss/articles", "lang": "en", "topic": "food-processing", "enabled": false },
+    { "name": "Sanayi Haberleri (placeholder)", "url": "https://example.com/sanayi/rss", "lang": "tr", "topic": "industry", "enabled": false },
+    { "name": "Dış Ticaret (placeholder)", "url": "https://example.com/trade/rss", "lang": "en", "topic": "trade", "enabled": false }
+  ],
+  "apiSources": [],
+  "keywords": {
+    "include": [
+      "gıda üretim", "gıda sanayi", "süt", "salça", "ketçap", "dolum", "paketleme",
+      "üretim hattı", "fabrika", "sanayi", "ihracat", "yatırım", "otomasyon",
+      "food processing", "dairy", "packaging machinery", "industrial production",
+      "production line", "turnkey", "manufacturing investment", "export", "factory"
+    ],
+    "exclude": ["tarif", "recipe", "diyet", "diet", "restoran", "restaurant review", "magazin"]
+  },
+  "maxItemsPerRun": 20,
+  "lookbackHours": 36,
+  "minScore": 1
+}

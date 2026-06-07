@@ -1,0 +1,66 @@
+{
+  "company": "ProcessTürk",
+  "url": "https://processturk.com",
+  "email": "info@processturk.com",
+  "location": "İstanbul, Türkiye",
+  "positioning_tr": "ProcessTürk; yatırım fikrini uygulanabilir üretim sistemine dönüştüren, anahtar teslim tesisler ve makine tedarik koordinasyonu sunan uluslararası bir endüstriyel çözüm markasıdır.",
+  "positioning_en": "ProcessTürk is an industrial project development and machinery sourcing brand that transforms production ideas into executable manufacturing systems for international clients.",
+  "about_tr": "Türkiye'nin önde gelen endüstriyel ekipman üreticilerini dünyaya taşıyan, anahtar teslim proje şirketi. Gıda, süt, içecek ve diğer endüstriyel sektörlere proje tasarımından kurulum ve eğitime kadar uçtan uca hizmet sunar. Deneyimli mühendislik ekibi ve güçlü tedarikçi ağı ile 10+ yıllık tecrübe.",
+  "sectors": [
+    "Sos / mayonez / ketçap üretim hatları",
+    "Domates ve biber salçası işleme",
+    "Süt prosesi (pastörizatör, homojenizatör, separatör, evaporatör, tereyağı, yoğurt dolum)",
+    "Dolum & paketleme sistemleri",
+    "Soğuk depo çözümleri",
+    "Anahtar teslim gıda tesisleri",
+    "Özel endüstriyel projeler (bal, bulyon, tuz, küp şeker, yumurta, deterjan, plastik geri dönüşüm, yapı malzemesi)"
+  ],
+  "markets": ["Türkiye", "Afrika", "Körfez", "Orta Doğu"],
+  "reach": "30+ ülke, 10+ yıl tecrübe",
+  "product_lines": [
+    {
+      "name": "SAUCE serisi",
+      "summary": "Sos/mayonez/ketçap üretim hatları, 500–1500 kg/saat. AISI 304/316, PLC+HMI, CIP uyumlu. Giriş (SAUCE 500), orta (SAUCE 1000), endüstriyel (SAUCE 1500) kademeleri."
+    },
+    {
+      "name": "MACLINE serisi",
+      "summary": "Domates/biber salçası, ketçap, acı/barbekü sos, meyve suyu işleme. 6.000–12.000 kg/gün. ECO, PLUS, PRO, PREMIUM ve JUICE paketleri."
+    },
+    {
+      "name": "Süt prosesi ekipmanları",
+      "summary": "Pastörizatör (500–20.000 L/saat), homojenizatör (150–250 bar), krema separatörü, klarifikatör, vakum evaporatör, tereyağı yayık, yoğurt dolum. AISI 304/316, PLC+HMI, tam CIP entegrasyonu."
+    }
+  ],
+  "value_pillars": [
+    "Tek noktadan koordinasyon (çok tedarikçi yerine tek proje yapısı)",
+    "Uygulanabilir yaklaşım (parça listesi değil, çalışan üretim sistemi)",
+    "Bütçe kademeli konfigürasyon (Giriş / Standart / İleri)",
+    "Uluslararası tecrübe (Türkiye, Afrika, Körfez, Orta Doğu)",
+    "Teknik + ticari bakış (ROI, operasyon, fizibilite)",
+    "Ölçeklenebilir sistemler (küçük başla, kapasite/otomasyon büyüt)"
+  ],
+  "values": ["Güvenilirlik", "Odak", "Şeffaflık"],
+  "why_turkey": [
+    "Rekabetçi fiyatlar",
+    "Hızlı teslimat (coğrafi avantaj)",
+    "Esnek üretim",
+    "CE / FDA / uluslararası standartlar"
+  ],
+  "audience": "Gıda/endüstriyel üreticiler, yatırımcılar, tesis sahipleri, Türkiye ve gelişmekte olan pazarlardaki ithalatçı/ihracatçılar",
+  "tone": ["Kendinden emin", "Teknik ama anlaşılır", "B2B", "Abartısız", "Çözüm odaklı"],
+  "dos": [
+    "Haberi somut bir ProcessTürk yeteneğine bağla",
+    "ROI / operasyon / fizibilite diline hitap et",
+    "Tek net bir çağrı (CTA) kullan",
+    "Kaynağı atfet (ör. 'X'e göre...')"
+  ],
+  "donts": [
+    "Siyasi yorum yapma",
+    "Rakip eleştirisi yapma",
+    "Abartılı/temelsiz iddia kullanma",
+    "Veride olmayan fiyat verme",
+    "Jargon yığını yapma"
+  ],
+  "cta_default_tr": "Projenizi anlatın — info@processturk.com",
+  "cta_default_en": "Tell us about your project — info@processturk.com"
+}

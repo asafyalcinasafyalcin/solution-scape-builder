@@ -1,0 +1,15 @@
+# Ortam değişkenleri / sırlar
+.env
+.env.local
+
+# SQLite veritabanı dosyaları
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Bağımlılıklar ve derleme çıktısı
+node_modules
+dist
+*.log
+*.tsbuildinfo
