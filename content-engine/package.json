@@ -9,6 +9,7 @@
     "start": "tsx src/index.ts",
     "pipeline:daily": "tsx src/pipeline/daily.ts",
     "generate": "tsx src/pipeline/daily.ts",
+    "test:generate": "tsx src/pipeline/testGenerate.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
