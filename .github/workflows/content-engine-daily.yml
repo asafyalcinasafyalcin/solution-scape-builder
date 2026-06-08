@@ -1,0 +1,40 @@
+name: Content Engine — Günlük Taslak
+
+# Her gün 06:00 UTC'de çalışır + GitHub'dan elle tetiklenebilir (workflow_dispatch).
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: content-engine
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Bağımlılıkları kur
+        run: bun install
+
+      - name: Günlük pipeline (ingest + üret)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'claude-sonnet-4-6' }}
+          DATABASE_PATH: ./data/content-engine.db
+        run: bun run pipeline:daily
+
+      # NOT: GitHub Actions çalışanı geçicidir; üretilen SQLite veritabanı artifact olarak
+      # saklanır. Taslakların panelden her yerden görünmesi için kalıcı/hosted bir DB
+      # (ör. Supabase) gerekir — bkz. content-engine/README.md "Zamanlama" bölümü.
+      - name: Taslak veritabanını artifact olarak yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-engine-db
+          path: content-engine/data/content-engine.db
+          if-no-files-found: warn

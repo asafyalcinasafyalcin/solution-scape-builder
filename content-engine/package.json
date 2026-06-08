@@ -1,0 +1,33 @@
+{
+  "name": "processturk-content-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ProcessTürk LinkedIn içerik motoru — haber takip, AI taslak üretimi, onay paneli (Faz 1)",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "pipeline:daily": "tsx src/pipeline/daily.ts",
+    "generate": "tsx src/pipeline/daily.ts",
+    "test:generate": "tsx src/pipeline/testGenerate.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@hono/node-server": "^1.13.7",
+    "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.4.7",
+    "hono": "^4.6.14",
+    "rss-parser": "^3.13.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
+  }
+}
