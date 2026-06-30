@@ -227,13 +227,14 @@ def get_or_create_session(platform: str) -> RegistrationSession:
 # ─── Browser helpers ───────────────────────────────────────────────────────────
 
 async def launch_browser(headless: bool = True):
-    """Launch pre-installed Chromium. Returns (pw, browser, context, page)."""
+    """Launch Chromium. Returns (pw, browser, context, page)."""
     from playwright.async_api import async_playwright
 
-    os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "/opt/pw-browsers")
-    os.environ.setdefault("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1")
-
     executable = _find_chromium()
+    if executable:
+        # CCR cloud environment — use pre-installed browser at fixed path
+        os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "/opt/pw-browsers")
+        os.environ.setdefault("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1")
 
     pw = await async_playwright().start()
 
