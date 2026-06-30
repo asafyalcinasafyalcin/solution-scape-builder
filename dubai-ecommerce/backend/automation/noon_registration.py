@@ -33,7 +33,14 @@ async def run_noon_registration(profile: CompanyProfile, session: RegistrationSe
 
         # ── STEP 1: Navigate to sell.noon.com ──────────────────────────────────
         session.update_step(1, "sell.noon.com'a gidiliyor", SessionState.running)
-        await page.goto("https://sell.noon.com", wait_until="domcontentloaded", timeout=30000)
+        for _attempt in range(3):
+            try:
+                await page.goto("https://sell.noon.com", wait_until="load", timeout=60000)
+                break
+            except Exception:
+                if _attempt == 2:
+                    raise
+                await page.wait_for_timeout(4000)
         await page.wait_for_timeout(2000)
         await save_screenshot(page, session, "01_noon_homepage")
 
@@ -177,7 +184,7 @@ async def run_noon_registration(profile: CompanyProfile, session: RegistrationSe
 
         # ── STEP 6: Navigate to Seller Lab ─────────────────────────────────────
         session.update_step(6, "Seller Lab'a gidiliyor", SessionState.running)
-        await page.goto("https://sell.noon.com", wait_until="domcontentloaded", timeout=30000)
+        await page.goto("https://sell.noon.com", wait_until="load", timeout=60000)
         await page.wait_for_timeout(2000)
 
         seller_lab_selectors = [

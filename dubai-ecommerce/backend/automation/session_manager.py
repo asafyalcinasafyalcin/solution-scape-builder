@@ -238,8 +238,10 @@ async def launch_browser(headless: bool = True):
 
     pw = await async_playwright().start()
 
+    is_ccr = executable is not None
+
     launch_kwargs = dict(
-        headless=headless,
+        headless=headless if is_ccr else False,
         args=[
             "--no-sandbox",
             "--disable-setuid-sandbox",
@@ -248,8 +250,12 @@ async def launch_browser(headless: bool = True):
             "--disable-gpu",
         ],
     )
-    if executable:
+    if is_ccr:
         launch_kwargs["executable_path"] = executable
+    else:
+        # Local Mac: use installed Google Chrome to avoid headless TLS fingerprint
+        # detection that causes ERR_HTTP2_PROTOCOL_ERROR on sites like sell.noon.com
+        launch_kwargs["channel"] = "chrome"
 
     browser = await pw.chromium.launch(**launch_kwargs)
     context = await browser.new_context(
@@ -257,7 +263,7 @@ async def launch_browser(headless: bool = True):
         locale="en-US",
         timezone_id="Asia/Dubai",
         user_agent=(
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
             "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         ),
         accept_downloads=True,
