@@ -1,0 +1,44 @@
+{
+  "name": "Dubai E-Ticaret — Düşük Stok Uyarısı",
+  "description": "FBA veya FBN stok 10 adedinin altına düştüğünde uyarı gönder",
+  "trigger": {
+    "type": "schedule",
+    "interval": "every_day_at_8am",
+    "note": "Her sabah stok seviyelerini kontrol et"
+  },
+  "modules": [
+    {
+      "step": 1,
+      "app": "HTTP",
+      "action": "Make a request",
+      "fields": {
+        "url": "http://your-backend-url/api/amazon/inventory?low_stock_threshold=10",
+        "method": "GET"
+      }
+    },
+    {
+      "step": 2,
+      "app": "Tools",
+      "action": "Set Multiple Variables",
+      "fields": {
+        "low_stock_count": "{{length(1.low_stock_skus)}}"
+      }
+    },
+    {
+      "step": 3,
+      "app": "Router",
+      "condition": "{{2.low_stock_count}} > 0",
+      "true_path": "Send alert",
+      "false_path": "Stop"
+    },
+    {
+      "step": 4,
+      "app": "Gmail",
+      "action": "Send an Email",
+      "fields": {
+        "subject": "STOK UYARISI: {{2.low_stock_count}} SKU düşük stok",
+        "body": "Düşük stoklu SKU'lar:\n{{1.low_stock_skus}}\n\nHemen tedarikçinize sipariş verin."
+      }
+    }
+  ]
+}

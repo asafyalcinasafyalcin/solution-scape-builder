@@ -1,0 +1,41 @@
+{
+  "name": "Dubai E-Ticaret — Haftalık Rapor",
+  "description": "Her Pazartesi sabahı haftalık satış özeti emaili gönder",
+  "trigger": {
+    "type": "schedule",
+    "cron": "0 8 * * 1",
+    "label": "Her Pazartesi 08:00"
+  },
+  "modules": [
+    {
+      "step": 1,
+      "app": "HTTP",
+      "action": "Make a request",
+      "note": "Dashboard istatistiklerini çek",
+      "fields": {
+        "url": "http://your-backend-url/api/dashboard/stats",
+        "method": "GET"
+      }
+    },
+    {
+      "step": 2,
+      "app": "HTTP",
+      "action": "Make a request",
+      "note": "Amazon siparişlerini çek (son 7 gün)",
+      "fields": {
+        "url": "http://your-backend-url/api/amazon/orders?days=7",
+        "method": "GET"
+      }
+    },
+    {
+      "step": 3,
+      "app": "Gmail",
+      "action": "Send an Email",
+      "fields": {
+        "to": "asafyalcinistanbullu@gmail.com",
+        "subject": "Haftalık Dubai E-Ticaret Raporu",
+        "body": "=== HAFTALIK RAPOR ===\n\nToplam Ürün: {{1.total_products}}\nAmazon Aktif: {{1.amazon_active_listings}}\nnoon Aktif: {{1.noon_active_listings}}\nToplam Sipariş: {{1.total_orders}}\n\n=== AKSİYON GEREKTİREN ===\nDüşük stok takibi için /api/amazon/inventory kontrol edin."
+      }
+    }
+  ]
+}
