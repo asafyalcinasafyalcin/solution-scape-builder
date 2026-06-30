@@ -12,14 +12,20 @@ Endpoint'ler:
   /api/inventory      → Stok yönetimi
 """
 
+import asyncio
+import json
 import os
 from contextlib import asynccontextmanager
+from enum import Enum
+from pathlib import Path
 from typing import Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 from sqlmodel import SQLModel, create_engine, Session, select
 import io
 
@@ -30,6 +36,21 @@ from amazon import listings as amazon_listings, orders as amazon_orders, invento
 from noon import content as noon_content, fulfillment as noon_fulfillment, nis_export
 from research import ProductCandidate, rank_candidates
 from content import generate_listing_content
+from automation import (
+    CompanyProfile,
+    SessionState,
+    get_session,
+    get_or_create_session,
+    run_noon_registration,
+    run_amazon_registration,
+)
+
+UPLOADS_BASE = Path(__file__).parent / "uploads"
+UPLOADS_BASE.mkdir(exist_ok=True)
+(UPLOADS_BASE / "documents").mkdir(exist_ok=True)
+(UPLOADS_BASE / "status").mkdir(exist_ok=True)
+(UPLOADS_BASE / "screenshots" / "noon").mkdir(parents=True, exist_ok=True)
+(UPLOADS_BASE / "screenshots" / "amazon").mkdir(parents=True, exist_ok=True)
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dubai_ecommerce.db")
 engine = create_engine(DATABASE_URL, echo=False)
@@ -50,10 +71,17 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# Serve screenshots as static files
+app.mount(
+    "/api/setup/screenshots",
+    StaticFiles(directory=str(UPLOADS_BASE / "screenshots")),
+    name="screenshots",
 )
 
 
@@ -142,6 +170,167 @@ def get_noon_checklist():
             "NIS Excel/CSV yedek yöntem olarak hazır",
         ],
     }
+
+
+# ─── HESAP KAYIT OTOMASYONU ────────────────────────────────────────────────────
+
+class CompanyProfileRequest(BaseModel):
+    company_name: str
+    free_zone_address: str
+    owner_name: str
+    email: str
+    phone: str
+    iban: str
+    password: str
+
+
+class OTPSubmission(BaseModel):
+    value: str
+    otp_type: str = "sms_otp"
+
+
+class DocumentTypeEnum(str, Enum):
+    trade_license = "trade_license"
+    passport = "passport"
+    bank_statement = "bank_statement"
+
+
+@app.post("/api/setup/company-profile")
+async def save_company_profile(profile: CompanyProfileRequest):
+    """Şirket profilini kaydet (otomasyon için form verisi)."""
+    path = UPLOADS_BASE / "company_profile.json"
+    path.write_text(profile.model_dump_json(indent=2))
+    return {"saved": True, "profile_path": str(path)}
+
+
+@app.get("/api/setup/company-profile")
+async def load_company_profile():
+    """Kayıtlı şirket profilini yükle (şifre hariç)."""
+    path = UPLOADS_BASE / "company_profile.json"
+    if not path.exists():
+        return {"exists": False}
+    data = json.loads(path.read_text())
+    data.pop("password", None)  # never return password
+    return {"exists": True, **data}
+
+
+@app.post("/api/setup/upload-document")
+async def upload_document(
+    document_type: DocumentTypeEnum = Form(...),
+    file: UploadFile = File(...),
+):
+    """Belge yükle: trade_license | passport | bank_statement"""
+    ALLOWED_MIME = {"application/pdf", "image/jpeg", "image/png", "image/webp"}
+    if file.content_type not in ALLOWED_MIME:
+        raise HTTPException(400, f"Desteklenmeyen dosya türü: {file.content_type}")
+
+    suffix = Path(file.filename or "doc.pdf").suffix or ".pdf"
+    dest = UPLOADS_BASE / "documents" / f"{document_type.value}{suffix}"
+
+    content = await file.read()
+    if len(content) > 10 * 1024 * 1024:
+        raise HTTPException(400, "Dosya çok büyük (max 10 MB)")
+
+    dest.write_bytes(content)
+    return {
+        "saved": True,
+        "document_type": document_type.value,
+        "filename": dest.name,
+        "size_bytes": len(content),
+    }
+
+
+@app.get("/api/setup/documents")
+async def list_uploaded_documents():
+    """Hangi belgeler yüklendi kontrol et."""
+    docs_dir = UPLOADS_BASE / "documents"
+    expected = ["trade_license", "passport", "bank_statement"]
+    result = {}
+    for doc in expected:
+        matches = list(docs_dir.glob(f"{doc}.*"))
+        result[doc] = {
+            "uploaded": len(matches) > 0,
+            "filename": matches[0].name if matches else None,
+        }
+    return result
+
+
+@app.post("/api/setup/start-registration/{platform}")
+async def start_registration(platform: str):
+    """Playwright ile kayıt otomasyonunu başlat (noon veya amazon)."""
+    if platform not in ("noon", "amazon"):
+        raise HTTPException(400, "Platform 'noon' veya 'amazon' olmalı")
+
+    profile_path = UPLOADS_BASE / "company_profile.json"
+    if not profile_path.exists():
+        raise HTTPException(400, "Şirket profili bulunamadı. Önce POST /api/setup/company-profile yapın.")
+
+    for doc in ("trade_license", "passport"):
+        if not list((UPLOADS_BASE / "documents").glob(f"{doc}.*")):
+            raise HTTPException(400, f"Eksik belge: {doc}")
+
+    session = get_or_create_session(platform)
+    if session.status.state == SessionState.running:
+        raise HTTPException(409, f"{platform} kaydı zaten devam ediyor")
+
+    profile_data = json.loads(profile_path.read_text())
+    profile = CompanyProfile(**profile_data)
+
+    # Reset session for fresh run
+    session.status.state = SessionState.idle
+    session.status.current_step = 0
+    session.status.steps_completed = []
+    session.status.error_message = None
+    session.status.completed_at = None
+    session.status.started_at = None
+    session._otp_event.clear()
+    session._otp_value = None
+
+    if platform == "noon":
+        asyncio.create_task(run_noon_registration(profile, session))
+    else:
+        asyncio.create_task(run_amazon_registration(profile, session))
+
+    return {"started": True, "platform": platform, "status": session.get_status_dict()}
+
+
+@app.get("/api/setup/registration-status/{platform}")
+async def get_registration_status(platform: str):
+    """Kayıt otomasyon durumunu döndür (3sn'de bir polling)."""
+    if platform not in ("noon", "amazon"):
+        raise HTTPException(400, "Platform 'noon' veya 'amazon' olmalı")
+
+    session = get_session(platform)
+    if not session:
+        return {"platform": platform, "state": "idle", "current_step": 0, "progress_pct": 0}
+
+    status = session.get_status_dict()
+    if status.get("latest_screenshot"):
+        status["screenshot_url"] = f"/api/setup/screenshots/{platform}/{status['latest_screenshot']}"
+    return status
+
+
+@app.post("/api/setup/submit-otp/{platform}")
+async def submit_otp(platform: str, body: OTPSubmission):
+    """SMS OTP, email onayı veya manuel adım tamamlamayı ilet."""
+    if platform not in ("noon", "amazon"):
+        raise HTTPException(400, "Geçersiz platform")
+
+    session = get_session(platform)
+    if not session:
+        raise HTTPException(404, "Bu platform için aktif oturum yok")
+
+    waiting_states = {
+        SessionState.waiting_for_otp,
+        SessionState.waiting_for_email,
+        SessionState.waiting_for_captcha,
+        SessionState.waiting_for_human_action,
+    }
+    if session.status.state not in waiting_states:
+        raise HTTPException(409, f"Oturum kullanıcı girdisi beklemiyor (durum: {session.status.state})")
+
+    session.submit_otp(body.value)
+    return {"relayed": True, "platform": platform, "otp_type": body.otp_type}
 
 
 # ─── ÜRÜN KATALOĞU ─────────────────────────────────────────────────────────────

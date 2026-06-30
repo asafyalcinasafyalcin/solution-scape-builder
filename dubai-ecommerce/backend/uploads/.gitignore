@@ -1,0 +1,10 @@
+# Ignore uploaded documents and screenshots (sensitive files)
+documents/*
+!documents/.gitkeep
+screenshots/noon/*
+!screenshots/noon/.gitkeep
+screenshots/amazon/*
+!screenshots/amazon/.gitkeep
+status/*
+!status/.gitkeep
+company_profile.json
