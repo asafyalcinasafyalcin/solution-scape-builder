@@ -253,21 +253,32 @@ async def launch_browser(headless: bool = True):
     if is_ccr:
         launch_kwargs["executable_path"] = executable
     else:
-        # Local Mac: use installed Google Chrome to avoid headless TLS fingerprint
-        # detection that causes ERR_HTTP2_PROTOCOL_ERROR on sites like sell.noon.com
+        # Local Mac / VPS: use installed Google Chrome to avoid headless TLS
+        # fingerprint detection (ERR_HTTP2_PROTOCOL_ERROR on sell.noon.com)
         launch_kwargs["channel"] = "chrome"
 
-    browser = await pw.chromium.launch(**launch_kwargs)
-    context = await browser.new_context(
+    try:
+        browser = await pw.chromium.launch(**launch_kwargs)
+    except Exception:
+        if launch_kwargs.pop("channel", None) is None:
+            raise
+        # Google Chrome not installed — fall back to Playwright's bundled Chromium
+        browser = await pw.chromium.launch(**launch_kwargs)
+
+    context_kwargs = dict(
         viewport={"width": 1280, "height": 900},
         locale="en-US",
         timezone_id="Asia/Dubai",
-        user_agent=(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        ),
         accept_downloads=True,
     )
+    if is_ccr:
+        # Headless CCR Chromium reports "HeadlessChrome" — mask it.
+        # Real Chrome (local/VPS) keeps its own UA; overriding is a detection signal.
+        context_kwargs["user_agent"] = (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+    context = await browser.new_context(**context_kwargs)
     await context.add_init_script(
         "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
     )

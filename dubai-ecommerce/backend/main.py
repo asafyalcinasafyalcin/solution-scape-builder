@@ -20,10 +20,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
+import base64
+import secrets
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sqlmodel import SQLModel, create_engine, Session, select
@@ -76,6 +79,29 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Basic Auth (VPS deployment) ────────────────────────────────────────────────
+# BASIC_AUTH_USER + BASIC_AUTH_PASS env değişkenleri ayarlıysa tüm istekler korunur.
+_BASIC_USER = os.getenv("BASIC_AUTH_USER")
+_BASIC_PASS = os.getenv("BASIC_AUTH_PASS")
+
+if _BASIC_USER and _BASIC_PASS:
+
+    @app.middleware("http")
+    async def basic_auth_middleware(request, call_next):
+        auth = request.headers.get("authorization", "")
+        if auth.startswith("Basic "):
+            try:
+                decoded = base64.b64decode(auth[6:]).decode("utf-8")
+                user, _, pw = decoded.partition(":")
+                if secrets.compare_digest(user, _BASIC_USER) and secrets.compare_digest(pw, _BASIC_PASS):
+                    return await call_next(request)
+            except Exception:
+                pass
+        return Response(
+            status_code=401,
+            headers={"WWW-Authenticate": 'Basic realm="Dubai E-Ticaret"'},
+        )
 
 # Serve screenshots as static files
 app.mount(
@@ -580,6 +606,22 @@ def get_dashboard_stats():
             "noon": {"marketplace": "noon.com UAE", "status": "ready"},
         },
     }
+
+
+# ─── FRONTEND (VPS: tek porttan servis) ──────────────────────────────────────
+# Docker build sırasında React dist çıktısı backend/static/ altına kopyalanır.
+# Varsa SPA olarak servis edilir — tüm bilinmeyen path'ler index.html'e düşer.
+
+_FRONTEND_DIST = Path(__file__).parent / "static"
+
+if _FRONTEND_DIST.exists():
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        candidate = _FRONTEND_DIST / full_path
+        if full_path and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_FRONTEND_DIST / "index.html")
 
 
 if __name__ == "__main__":
