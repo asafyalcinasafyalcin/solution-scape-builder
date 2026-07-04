@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-dubai-navy text-white px-4 py-2 rounded-lg font-medium hover:bg-dubai-navy-light transition-colors;
+  }
+
+  .btn-amazon {
+    @apply bg-amazon-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-amazon-orange-dark transition-colors;
+  }
+
+  .btn-noon {
+    @apply bg-noon-dark text-noon-yellow px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm p-6;
+  }
+
+  .platform-badge-amazon {
+    @apply inline-flex items-center gap-1 bg-amazon-orange/10 text-amazon-orange-dark text-xs font-semibold px-2 py-0.5 rounded-full;
+  }
+
+  .platform-badge-noon {
+    @apply inline-flex items-center gap-1 bg-noon-dark/10 text-noon-dark text-xs font-semibold px-2 py-0.5 rounded-full;
+  }
+}

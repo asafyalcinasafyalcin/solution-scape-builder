@@ -1,0 +1,17 @@
+services:
+  dubai-ecommerce:
+    build: .
+    container_name: dubai-ecommerce
+    ports:
+      # VPS'te 8000 dolu (mevcut servis) — dış port 8100
+      - "8100:8000"
+    environment:
+      # Panele girişte istenecek kullanıcı adı/şifre (belgeler hassas — mutlaka değiştirin)
+      - BASIC_AUTH_USER=${BASIC_AUTH_USER:-asaf}
+      - BASIC_AUTH_PASS=${BASIC_AUTH_PASS:-Dubai2026!}
+      - DATABASE_URL=sqlite:///./uploads/dubai_ecommerce.db
+    volumes:
+      # Belgeler, profil, ekran görüntüleri ve DB container yeniden başlasa da kalıcı
+      - ./backend/uploads:/app/backend/uploads
+    shm_size: 2gb
+    restart: unless-stopped

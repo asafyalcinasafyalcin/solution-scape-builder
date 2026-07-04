@@ -1,0 +1,44 @@
+{
+  "name": "Dubai E-Ticaret — Yeni Sipariş Bildirimi",
+  "description": "Amazon.ae veya noon.com'da yeni sipariş geldiğinde email/Slack bildirimi gönder",
+  "trigger": {
+    "type": "webhook",
+    "label": "Backend'den Sipariş Webhook",
+    "note": "FastAPI backend /api/webhooks/order endpoint'i bu webhook'u tetikler"
+  },
+  "modules": [
+    {
+      "step": 1,
+      "app": "Webhook",
+      "action": "Custom Webhook (Instant trigger)",
+      "fields": {
+        "webhook_name": "dubai-ecommerce-order",
+        "data_structure": {
+          "platform": "string (amazon|noon)",
+          "order_id": "string",
+          "sku": "string",
+          "quantity": "number",
+          "price_aed": "number",
+          "status": "string"
+        }
+      }
+    },
+    {
+      "step": 2,
+      "app": "Gmail",
+      "action": "Send an Email",
+      "fields": {
+        "to": "asafyalcinistanbullu@gmail.com",
+        "subject": "Yeni Sipariş: {{1.platform}} - {{1.order_id}}",
+        "body": "Platform: {{1.platform}}\nSipariş ID: {{1.order_id}}\nSKU: {{1.sku}}\nMiktar: {{1.quantity}}\nTutar: {{1.price_aed}} AED\nDurum: {{1.status}}"
+      }
+    }
+  ],
+  "setup_instructions": [
+    "1. Make.com'da yeni senaryo oluştur",
+    "2. Webhook modülü ekle → Custom Webhook → Webhook URL'yi kopyala",
+    "3. .env dosyasına MAKE_ORDER_WEBHOOK_URL=<url> olarak ekle",
+    "4. Gmail modülü ekle → Send an Email",
+    "5. Senaryoyu aktif et"
+  ]
+}
