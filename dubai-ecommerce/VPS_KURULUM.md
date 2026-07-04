@@ -1,7 +1,7 @@
 # VPS Kurulum Rehberi
 
 Platform tek Docker container olarak çalışır: React arayüz + FastAPI backend +
-Google Chrome + sanal ekran (xvfb). Tek port: **8000**.
+Google Chrome + sanal ekran (xvfb). Tek port: **8100** (dış) → 8000 (container içi).
 
 ## Gereksinimler
 
@@ -28,7 +28,7 @@ docker compose up -d --build
 
 ## Giriş
 
-Tarayıcıdan: `http://VPS_IP_ADRESI:8000`
+Tarayıcıdan: `http://VPS_IP_ADRESI:8100`
 
 Kullanıcı adı/şifre sorar (Basic Auth):
 - Kullanıcı: `asaf`

@@ -3,7 +3,8 @@ services:
     build: .
     container_name: dubai-ecommerce
     ports:
-      - "8000:8000"
+      # VPS'te 8000 dolu (mevcut servis) — dış port 8100
+      - "8100:8000"
     environment:
       # Panele girişte istenecek kullanıcı adı/şifre (belgeler hassas — mutlaka değiştirin)
       - BASIC_AUTH_USER=${BASIC_AUTH_USER:-asaf}
