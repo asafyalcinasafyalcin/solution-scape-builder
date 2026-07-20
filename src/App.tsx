@@ -21,6 +21,7 @@ import Corporate from "./pages/Corporate";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Sunum from "./pages/Sunum";
+import SocialStudio from "./pages/SocialStudio";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,8 @@ const App = () => (
               <Route path="/iletisim" element={<Contact />} />
               <Route path="/sunum" element={<Sunum />} />
               <Route path="/presentation" element={<Sunum />} />
+              <Route path="/sosyal-medya" element={<SocialStudio />} />
+              <Route path="/studio" element={<SocialStudio />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

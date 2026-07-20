@@ -24,6 +24,7 @@ const Header = () => {
     { path: '/cozumler', label: t('nav.solutions') },
     { path: '/konfigurator', label: language === 'tr' ? 'Konfigüratör' : 'Configurator' },
     { path: '/sunum', label: t('sunum.nav') },
+    { path: '/sosyal-medya', label: language === 'tr' ? 'Sosyal Medya' : 'Social' },
   ];
 
   return (
