@@ -15,8 +15,10 @@ import {
   CATEGORIES,
   DEFAULT_CONFIG,
   FORMATS,
+  PRESETS,
   THEMES,
   StudioConfig,
+  applyPreset,
   buildCaption,
   ensureFont,
   renderTemplate,
@@ -116,6 +118,27 @@ const SocialStudio = () => {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
           {/* SOL: Kontroller */}
           <div className="space-y-8">
+            {/* Hazır Şablonlar */}
+            <div>
+              <span className={labelCls}>{tr ? 'Hazır Şablonlar' : 'Ready Templates'}</span>
+              <div className="flex flex-wrap gap-2.5">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setCfg((c) => applyPreset(c, p))}
+                    className="rounded-full border border-[#A68868]/50 bg-white px-4 py-2 text-sm font-medium text-[#071739] transition-all hover:border-[#A68868] hover:bg-[#A68868] hover:text-[#F6F4F0]"
+                  >
+                    {tr ? p.labelTr : p.labelEn}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2.5 text-xs text-[#8A6E51]">
+                {tr
+                  ? 'Tek tıkla örnek içeriği doldur, sonra dilediğin gibi düzenle.'
+                  : 'One click fills in an example, then edit freely.'}
+              </p>
+            </div>
+
             {/* Format */}
             <div>
               <span className={labelCls}>{tr ? 'Format' : 'Format'}</span>

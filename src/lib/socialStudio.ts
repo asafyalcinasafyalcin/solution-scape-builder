@@ -131,6 +131,172 @@ export const DEFAULT_CONFIG: StudioConfig = {
   handle: '@processturk',
 };
 
+// ---- Hazır şablonlar (presetler) ------------------------------------------
+interface PresetContent {
+  eyebrow?: string;
+  title: string;
+  accent?: string;
+  description?: string;
+}
+
+export interface Preset {
+  id: string;
+  labelTr: string;
+  labelEn: string;
+  category: CategoryId;
+  theme?: ThemeId;
+  format?: FormatId;
+  tr: PresetContent;
+  en: PresetContent;
+}
+
+export const PRESETS: Preset[] = [
+  {
+    id: 'yolda',
+    labelTr: '✈️ Yolda / Sıradaki proje',
+    labelEn: '✈️ On the road / Next project',
+    category: 'kisisel',
+    theme: 'navy',
+    format: 'post',
+    tr: {
+      eyebrow: 'YOLDAYIZ',
+      title: 'Sıradaki durak,',
+      accent: 'sıradaki proje',
+      description:
+        'Bir üretim hattını teslim ettik, şimdi yeni bir sahaya doğru yoldayız. Bu işin ofiste değil, tesiste bittiğine inanıyoruz — her uçuş yeni bir üretim hattı demek.',
+    },
+    en: {
+      eyebrow: 'ON THE ROAD',
+      title: 'Next stop,',
+      accent: 'next project',
+      description:
+        "One line delivered, already on the way to the next site. This work isn't finished at the office — it's finished on the factory floor. Every flight means another production line.",
+    },
+  },
+  {
+    id: 'vizyon',
+    labelTr: '🌍 Vizyon / Büyüme notu',
+    labelEn: '🌍 Vision / Growth note',
+    category: 'soz',
+    theme: 'navy',
+    format: 'post',
+    tr: {
+      eyebrow: 'BUGÜNÜN NOTU',
+      title: 'Bir sahadan',
+      accent: 'diğerine',
+      description:
+        'Mesafe uzuyor, standart aynı kalıyor: sahada çalışan sistemler. Her hafta yeni bir şehir, yeni bir tesis, aynı mühendislik disiplini.',
+    },
+    en: {
+      eyebrow: "TODAY'S NOTE",
+      title: 'From one site',
+      accent: 'to the next',
+      description:
+        'The distance grows, the standard stays the same: systems that work on the floor. A new city and a new plant every week, with the same engineering discipline.',
+    },
+  },
+  {
+    id: 'siradaki-story',
+    labelTr: '📱 SIRADAKİ (Story)',
+    labelEn: '📱 NEXT (Story)',
+    category: 'kisisel',
+    theme: 'navy',
+    format: 'story',
+    tr: {
+      eyebrow: 'PERDE ARKASI',
+      title: 'SIRADAKİ.',
+      accent: 'Yeni saha, yeni hat.',
+      description: 'Yeni proje, yeni yolculuk. Süreci buradan takip edin.',
+    },
+    en: {
+      eyebrow: 'BEHIND THE SCENES',
+      title: 'NEXT.',
+      accent: 'New site, new line.',
+      description: 'New project, new journey. Follow the process here.',
+    },
+  },
+  {
+    id: 'proje-teslim',
+    labelTr: '🚀 Yeni proje teslim',
+    labelEn: '🚀 Project delivered',
+    category: 'proje',
+    theme: 'navy',
+    format: 'post',
+    tr: {
+      eyebrow: 'YENİ PROJE',
+      title: 'Yeni bir üretim hattını',
+      accent: 'devreye aldık',
+      description:
+        'Anahtar teslim proje: tasarımdan sahada çalışan sisteme kadar tüm süreci ProcessTürk mühendisliğiyle tamamladık.',
+    },
+    en: {
+      eyebrow: 'NEW PROJECT',
+      title: 'A new production line,',
+      accent: 'now live',
+      description:
+        'A turnkey project: from design to a system running on the floor, delivered end-to-end with ProcessTürk engineering.',
+    },
+  },
+  {
+    id: 'teknik-ipucu',
+    labelTr: '🔧 Teknik ipucu',
+    labelEn: '🔧 Technical tip',
+    category: 'ipucu',
+    theme: 'light',
+    format: 'post',
+    tr: {
+      eyebrow: 'TEKNİK İPUCU',
+      title: 'Doğru hat tasarımı',
+      accent: 'kapasiteyle başlar',
+      description:
+        'Bir üretim hattını planlarken ilk soru makine değil, hedef kapasitedir. Kapasiteyi netleştirin; makine seçimi ve yerleşim kendiliğinden şekillenir.',
+    },
+    en: {
+      eyebrow: 'TECHNICAL TIP',
+      title: 'Good line design',
+      accent: 'starts with capacity',
+      description:
+        'When planning a line, the first question is not the machine but the target capacity. Nail the capacity, and machine choice and layout follow naturally.',
+    },
+  },
+  {
+    id: 'fuar',
+    labelTr: '📍 Fuar / Etkinlik duyurusu',
+    labelEn: '📍 Fair / Event',
+    category: 'etkinlik',
+    theme: 'copper',
+    format: 'post',
+    tr: {
+      eyebrow: 'ETKİNLİK',
+      title: 'Fuarda',
+      accent: 'buluşalım',
+      description:
+        'Standımızda gıda ve endüstriyel üretim çözümlerimizi konuşmak, projenizi birlikte planlamak için sizi bekliyoruz.',
+    },
+    en: {
+      eyebrow: 'EVENT',
+      title: "Let's meet",
+      accent: 'at the fair',
+      description:
+        'Visit our stand to talk through our food and industrial production solutions and plan your project together.',
+    },
+  },
+];
+
+export function applyPreset(cfg: StudioConfig, preset: Preset): StudioConfig {
+  const content = cfg.lang === 'en' ? preset.en : preset.tr;
+  return {
+    ...cfg,
+    category: preset.category,
+    theme: preset.theme ?? cfg.theme,
+    format: preset.format ?? cfg.format,
+    eyebrow: content.eyebrow ?? '',
+    title: content.title,
+    accent: content.accent ?? '',
+    description: content.description ?? '',
+  };
+}
+
 // ---- Font yükleme (Inter) --------------------------------------------------
 let fontLoaded = false;
 export function ensureFont(onReady: () => void) {
