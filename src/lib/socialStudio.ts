@@ -113,6 +113,7 @@ export interface StudioConfig {
   authorTitle: string;
   website: string;
   handle: string;
+  overlay: number; // fotoğraf arka planda perde koyuluğu (0-100)
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
@@ -129,6 +130,7 @@ export const DEFAULT_CONFIG: StudioConfig = {
   authorTitle: 'Kurucu · ProcessTürk',
   website: 'processturk.com',
   handle: '@processturk',
+  overlay: 68,
 };
 
 // ---- Hazır şablonlar (presetler) ------------------------------------------
@@ -406,8 +408,32 @@ function palette(theme: ThemeId): Palette {
   }
 }
 
+// Fotoğrafı canvas'a "cover" (kırparak kaplama) yerleştirir
+function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, W: number, H: number) {
+  const ir = img.width / img.height;
+  const cr = W / H;
+  let dw = W;
+  let dh = H;
+  let dx = 0;
+  let dy = 0;
+  if (ir > cr) {
+    dh = H;
+    dw = H * ir;
+    dx = (W - dw) / 2;
+  } else {
+    dw = W;
+    dh = W / ir;
+    dy = (H - dh) / 2;
+  }
+  ctx.drawImage(img, dx, dy, dw, dh);
+}
+
 // ---- Ana render ------------------------------------------------------------
-export function renderTemplate(canvas: HTMLCanvasElement, cfgIn: StudioConfig) {
+export function renderTemplate(
+  canvas: HTMLCanvasElement,
+  cfgIn: StudioConfig,
+  opts?: { bgImage?: HTMLImageElement | null },
+) {
   const fmt = FORMATS.find((f) => f.id === cfgIn.format)!;
   const cat = CATEGORIES.find((c) => c.id === cfgIn.category)!;
   const W = fmt.w;
@@ -416,33 +442,47 @@ export function renderTemplate(canvas: HTMLCanvasElement, cfgIn: StudioConfig) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
-  const pal = palette(cfgIn.theme);
+  const hasPhoto = !!opts?.bgImage;
+  // Fotoğraf varsa metin okunabilirliği için sabit "foto" paleti kullan
+  const pal = hasPhoto ? palette('navy') : palette(cfgIn.theme);
   const s = W / 1080; // ölçek
 
   const eyebrowText = (cfgIn.eyebrow || (cfgIn.lang === 'tr' ? cat.eyebrowTr : cat.eyebrowEn)).toUpperCase();
   const catLabel = cfgIn.lang === 'tr' ? cat.labelTr : cat.labelEn;
 
-  // Arka plan gradyanı
-  const grad = ctx.createLinearGradient(0, 0, W * 0.4, H);
-  grad.addColorStop(0, pal.bgTop);
-  grad.addColorStop(1, pal.bgBottom);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+  if (hasPhoto && opts?.bgImage) {
+    // Fotoğraf arka plan + okunabilirlik perdesi (alt tarafta koyu)
+    drawCover(ctx, opts.bgImage, W, H);
+    const k = Math.min(100, Math.max(0, cfgIn.overlay)) / 100;
+    const scrim = ctx.createLinearGradient(0, 0, 0, H);
+    scrim.addColorStop(0, `rgba(7,23,57,${0.15 + 0.35 * k})`);
+    scrim.addColorStop(0.45, `rgba(7,23,57,${0.1 + 0.45 * k})`);
+    scrim.addColorStop(1, `rgba(5,15,38,${0.55 + 0.44 * k})`);
+    ctx.fillStyle = scrim;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    // Arka plan gradyanı
+    const grad = ctx.createLinearGradient(0, 0, W * 0.4, H);
+    grad.addColorStop(0, pal.bgTop);
+    grad.addColorStop(1, pal.bgBottom);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
 
-  // Köşe geometrik aksan (bakır ince çizgiler)
-  ctx.save();
-  ctx.strokeStyle = pal.line;
-  ctx.globalAlpha = cfgIn.theme === 'light' ? 0.5 : 0.35;
-  ctx.lineWidth = Math.max(1, 1.5 * s);
-  // sağ üst diyagonal desen
-  for (let i = 0; i < 5; i++) {
-    const off = i * 42 * s;
-    ctx.beginPath();
-    ctx.moveTo(W - 260 * s + off, -10);
-    ctx.lineTo(W + 10, 250 * s - off);
-    ctx.stroke();
+    // Köşe geometrik aksan (bakır ince çizgiler)
+    ctx.save();
+    ctx.strokeStyle = pal.line;
+    ctx.globalAlpha = cfgIn.theme === 'light' ? 0.5 : 0.35;
+    ctx.lineWidth = Math.max(1, 1.5 * s);
+    // sağ üst diyagonal desen
+    for (let i = 0; i < 5; i++) {
+      const off = i * 42 * s;
+      ctx.beginPath();
+      ctx.moveTo(W - 260 * s + off, -10);
+      ctx.lineTo(W + 10, 250 * s - off);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
-  ctx.restore();
 
   const margin = 96 * s;
   let y = margin + 44 * s;
@@ -472,8 +512,14 @@ export function renderTemplate(canvas: HTMLCanvasElement, cfgIn: StudioConfig) {
   ctx.fillText('PT', monoX + monoS / 2, monoY + monoS / 2 + 2 * s);
   ctx.textAlign = 'left';
 
-  // Dikey konum: içeriği format yüksekliğine göre ortala/yerleştir
-  const contentTop = fmt.id === 'landscape' ? margin + 150 * s : H * (fmt.id === 'story' ? 0.42 : 0.34);
+  // Dikey konum: içeriği format yüksekliğine göre yerleştir
+  // Fotoğraf varsa metni alt bölgeye (koyu perde) kaydır
+  let contentTop: number;
+  if (hasPhoto) {
+    contentTop = fmt.id === 'landscape' ? H * 0.5 : H * (fmt.id === 'story' ? 0.56 : 0.5);
+  } else {
+    contentTop = fmt.id === 'landscape' ? margin + 150 * s : H * (fmt.id === 'story' ? 0.42 : 0.34);
+  }
   y = contentTop;
 
   // Eyebrow (çizgi + uppercase)

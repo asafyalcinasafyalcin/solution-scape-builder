@@ -8,6 +8,8 @@ import {
   Square,
   RectangleHorizontal,
   Smartphone,
+  ImagePlus,
+  Trash2,
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
@@ -35,7 +37,9 @@ const SocialStudio = () => {
   const [cfg, setCfg] = useState<StudioConfig>({ ...DEFAULT_CONFIG, lang: language });
   const [copied, setCopied] = useState(false);
   const [fontTick, setFontTick] = useState(0);
+  const [photo, setPhoto] = useState<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const set = <K extends keyof StudioConfig>(key: K, value: StudioConfig[K]) =>
     setCfg((c) => ({ ...c, [key]: value }));
@@ -45,10 +49,23 @@ const SocialStudio = () => {
     ensureFont(() => setFontTick((t) => t + 1));
   }, []);
 
-  // Canvas'ı her config değişiminde yeniden çiz
+  // Canvas'ı her config / fotoğraf değişiminde yeniden çiz
   useEffect(() => {
-    if (canvasRef.current) renderTemplate(canvasRef.current, cfg);
-  }, [cfg, fontTick]);
+    if (canvasRef.current) renderTemplate(canvasRef.current, cfg, { bgImage: photo });
+  }, [cfg, fontTick, photo]);
+
+  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => setPhoto(img);
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   const caption = useMemo(() => buildCaption(cfg), [cfg]);
   const tr = cfg.lang === 'tr';
@@ -157,6 +174,50 @@ const SocialStudio = () => {
                   );
                 })}
               </div>
+            </div>
+
+            {/* Fotoğraf arka plan */}
+            <div>
+              <span className={labelCls}>{tr ? 'Fotoğraf (opsiyonel)' : 'Photo (optional)'}</span>
+              <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} className="hidden" />
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  onClick={() => fileRef.current?.click()}
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#071739] bg-[#071739] px-4 py-2.5 text-sm font-medium text-[#F6F4F0] transition-colors hover:bg-[#0d2450]"
+                >
+                  <ImagePlus className="h-4 w-4" />
+                  {photo ? (tr ? 'Fotoğrafı değiştir' : 'Change photo') : tr ? 'Fotoğraf yükle' : 'Upload photo'}
+                </button>
+                {photo && (
+                  <button
+                    onClick={() => setPhoto(null)}
+                    className="inline-flex items-center gap-2 rounded-lg border border-[#E0D8CC] bg-white px-4 py-2.5 text-sm font-medium text-[#3A4759] transition-colors hover:border-[#c4293c] hover:text-[#c4293c]"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {tr ? 'Kaldır' : 'Remove'}
+                  </button>
+                )}
+              </div>
+              {photo && (
+                <div className="mt-4">
+                  <span className={labelCls}>
+                    {tr ? `Perde Koyuluğu · %${cfg.overlay}` : `Overlay · ${cfg.overlay}%`}
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={cfg.overlay}
+                    onChange={(e) => set('overlay', Number(e.target.value))}
+                    className="w-full accent-[#A68868]"
+                  />
+                </div>
+              )}
+              <p className="mt-2 text-xs text-[#8A6E51]">
+                {tr
+                  ? 'Kendi fotoğrafını arka plan yap; metin ve logo otomatik üzerine biner. Renk teması metin rengini etkilemez.'
+                  : 'Use your own photo as the background; text and logo are placed on top automatically.'}
+              </p>
             </div>
 
             {/* Kategori */}
