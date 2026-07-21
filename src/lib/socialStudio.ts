@@ -514,11 +514,12 @@ export function renderTemplate(
 
   // Dikey konum: içeriği format yüksekliğine göre yerleştir
   // Fotoğraf varsa metni alt bölgeye (koyu perde) kaydır
+  const isLandscape = fmt.id === 'landscape';
   let contentTop: number;
   if (hasPhoto) {
-    contentTop = fmt.id === 'landscape' ? H * 0.5 : H * (fmt.id === 'story' ? 0.56 : 0.5);
+    contentTop = isLandscape ? H * 0.46 : H * (fmt.id === 'story' ? 0.56 : 0.5);
   } else {
-    contentTop = fmt.id === 'landscape' ? margin + 150 * s : H * (fmt.id === 'story' ? 0.42 : 0.34);
+    contentTop = isLandscape ? margin + 64 * s : H * (fmt.id === 'story' ? 0.42 : 0.34);
   }
   y = contentTop;
 
@@ -540,11 +541,11 @@ export function renderTemplate(
   if (!(ctx as any).letterSpacing) {
     // letterSpacing desteklenmiyorsa manuel aralıklı yeniden çiz (üstteki görünmez olur)
   }
-  y += 60 * s;
+  y += (isLandscape ? 46 : 60) * s;
 
   // Başlık (bold) + accent (italik light) — Sunum stilini yansıtır
   const maxTextW = W - margin * 2;
-  const titleSize = fmt.id === 'story' ? 82 * s : fmt.id === 'landscape' ? 62 * s : 76 * s;
+  const titleSize = fmt.id === 'story' ? 82 * s : isLandscape ? 46 * s : 76 * s;
   ctx.textBaseline = 'alphabetic';
   ctx.font = `700 ${titleSize}px Inter, system-ui, sans-serif`;
   const titleLines = wrapText(ctx, cfgIn.title, maxTextW);
@@ -575,7 +576,7 @@ export function renderTemplate(
     ctx.fillStyle = pal.body;
     const bodyLines = wrapText(ctx, cfgIn.description, Math.min(maxTextW, 820 * s));
     const bodyGap = bodySize * 1.45;
-    for (const line of bodyLines.slice(0, fmt.id === 'landscape' ? 3 : 5)) {
+    for (const line of bodyLines.slice(0, isLandscape ? 2 : 5)) {
       ctx.fillText(line, margin, y);
       y += bodyGap;
     }
@@ -587,8 +588,8 @@ export function renderTemplate(
   ctx.globalAlpha = 0.4;
   ctx.lineWidth = 1.5 * s;
   ctx.beginPath();
-  ctx.moveTo(margin, footerY - 54 * s);
-  ctx.lineTo(W - margin, footerY - 54 * s);
+  ctx.moveTo(margin, footerY - (isLandscape ? 44 : 54) * s);
+  ctx.lineTo(W - margin, footerY - (isLandscape ? 44 : 54) * s);
   ctx.stroke();
   ctx.globalAlpha = 1;
 
